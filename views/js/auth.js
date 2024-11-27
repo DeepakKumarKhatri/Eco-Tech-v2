@@ -1,5 +1,3 @@
-import { serverUrl } from "./utils/constants.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
@@ -35,32 +33,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
 
-    const loginData = { email, password };
-
     try {
-      const response = await fetch(serverUrl + "/auth/login", {
+      const response = await fetch("/signin", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify({ email, password }),
       });
-      const data = await response.json();
-      console.log({data});
-
-      if (data.message === "Successful") {
-        if (data.user.role === "USER") {
+      const content = await response.json();
+      if (content.message === "Login successful") {
+        if (content.user.role === "USER") {
           window.location.href = "/pages/user-dashboard/index.html";
         } else {
           window.location.href = "/pages/admin-dashboard/index.html";
         }
       } else {
-        alert(data.message || "Login failed.");
+        alert(content.message);
       }
     } catch (error) {
-      console.error("Error during registration:", error);
-      alert("Something went wrong. Please try again.");
+      alert(error.message);
     }
   });
 
@@ -78,30 +71,24 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const registerData = { fullName, email, password };
-
     try {
-      const response = await fetch(serverUrl + "/auth/register", {
+      const response = await fetch("/signup", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(registerData),
+        body: JSON.stringify({ fullName, email, password }),
       });
-      const data = await response.json();
+      const content = await response.json();
 
-      if (data.message === "User Created") {
-        alert("Account Created Successfully, Redirecting in 3 seconds...");
-        setTimeout(() => {
-          window.location.href = "/pages/user-dashboard/index.html";
-        }, 3000); // 3 seconds delay
+      if (content.message === "User registered successfully") {
+        window.location.href = "/pages/user-dashboard/index.html";
       } else {
-        alert(data.message || "Registration failed.");
+        alert(content.message);
       }
     } catch (error) {
-      console.error("Error during registration:", error);
-      alert("Something went wrong. Please try again.");
+      alert(error.message);
     }
   });
 });
