@@ -4,6 +4,8 @@ import fs from "fs";
 import path from "path";
 import cookie from "cookie";
 import { signin, signout, signup } from "./services/security.js";
+import { getUserDetails, updateProfileData } from "./services/system_user.js";
+import formidable from "formidable";
 
 const PORT = 8000;
 
@@ -51,6 +53,18 @@ const parseJSONBody = (req, callback) => {
   });
 };
 
+const parseFormData = (req, callback) => {
+  const form = formidable({ multiples: true }); // Allow multiple files if needed
+
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      callback(err, null, null);
+    } else {
+      callback(null, fields, files);
+    }
+  });
+};
+
 // Create server
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -80,6 +94,16 @@ const server = http.createServer((req, res) => {
     });
   } else if (route === "/signout" && method === "POST") {
     signout(req, res);
+  } else if (route === "/get-user" && method === "GET") {
+    getUserDetails(req, res);
+  } else if (route === "/update-user" && method === "PUT") {
+    parseFormData(req, (err, fields, files) => {
+      if (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "Error parsing form data" }));
+      }  
+      updateProfileData({ ...fields, image: files.image }, req, res);
+    });
   } else {
     const filePath = path.join(process.cwd(), "views", route);
 

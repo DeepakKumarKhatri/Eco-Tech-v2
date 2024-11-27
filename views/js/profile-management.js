@@ -23,24 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle form submission
-  profileForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Validate password fields
-    const newPassword = document.getElementById("newPassword").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match.");
-      return;
-    }
-
-    // Here you would typically send the form data to your server
-    // For this example, we'll just show an alert
-    alert("Profile updated successfully!");
-  });
-
   // Sidebar toggle functionality
   const sidebar = document.getElementById("sidebar");
   const sidebarToggle = document.getElementById("sidebarToggle");
@@ -77,10 +59,10 @@ profileForm.addEventListener("submit", async (e) => {
   formData.append("address", document.getElementById("address").value);
 
   if (imageUpload.files[0]) {
-    formData.append("image", imageUpload.files[0]); // Send as binary
+    formData.append("image", imageUpload.files[0]);
   }
 
-  const response = await fetch("/api/users/user-profile", {
+  const response = await fetch("/update-user", {
     method: "PUT",
     body: formData,
   });
@@ -90,13 +72,13 @@ profileForm.addEventListener("submit", async (e) => {
     alert("Profile updated successfully!");
     location.reload();
   } else {
-    alert(result.message || "Error updating profile");
+    alert(result.message);
   }
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const response = await fetch("/api/users/user-details", {
+    const response = await fetch("/get-user", {
       credentials: "include",
     });
     if (!response.ok) throw new Error("Failed to fetch user details");
@@ -111,7 +93,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const profileImage = document.getElementById("profileImage");
     profileImage.src = user.imageUrl || "../../assets/images/demo_user.png";
   } catch (error) {
-    console.error("Error fetching user details:", error);
-    alert("Failed to load user details. Please try again later.");
+    alert(error.message);
   }
 });

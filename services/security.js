@@ -7,7 +7,6 @@ export const signup = async (data, req, res) => {
   const { fullName, email, password } = data;
 
   try {
-    // Check if user already exists
     const [existingUser] = await pool.query(
       "SELECT * FROM user WHERE email = ?",
       [email]
@@ -16,11 +15,7 @@ export const signup = async (data, req, res) => {
       res.writeHead(400, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ message: "User already exists" }));
     }
-
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 5);
-
-    // Insert user into database
     await pool.query(
       "INSERT INTO user (fullName, email, password) VALUES (?, ?, ?)",
       [fullName, email, hashedPassword]
@@ -61,7 +56,6 @@ export const signin = async (data, req, res) => {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 1);
 
-    // Store session in the database
     await pool.query(
       "INSERT INTO session (userId, sessionId, expiresAt) VALUES (?, ?, ?)",
       [user.id, sessionId, expiresAt]
@@ -79,7 +73,12 @@ export const signin = async (data, req, res) => {
     res.end(
       JSON.stringify({
         message: "Login successful",
-        user: { id: user.id, fullName: user.fullName, email: user.email },
+        user: {
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role,
+        },
       })
     );
   } catch (error) {
@@ -99,7 +98,6 @@ export const signout = async (req, res) => {
       return res.end(JSON.stringify({ message: "No active session" }));
     }
 
-    // Remove session from database
     await pool.query("DELETE FROM session WHERE sessionId = ?", [sessionId]);
 
     // Clear the cookie
