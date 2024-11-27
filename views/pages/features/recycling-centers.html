@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycling Centers Locator - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="../../css/home/recycling-centers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="/index.html">EcoTech Recycle</a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../pages/features/about-us.html">About Us</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropbtn">
+                        Features
+                        <span class="dropdown-icon">&#9662;</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../../pages/features/recycling-guide.html">Recycling Guide</a></li>
+                        <li><a href="../../pages/features/community-challenges.html">Community Challenges</a></li>
+                        <li><a href="../../pages/features/pickup-request.html">Request Pickup</a></li>
+                        <li><a href="../../pages/features/recycling-centers.html">Recycling Centers</a></li>
+                        <li><a href="../../pages/features/rewards-program.html">Rewards Program</a></li>
+                        <li><a href="../../pages/features/educational-resources.html">Educational Resources</a></li>
+                        <li><a href="../../pages/features/impact-calculator.html">Impact Calculator</a></li>
+                        <li><a href="../../pages/features/marketplace.html">E-Waste Marketplace</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../pages/feedback/index.html">Feedback</a></li>
+                <li><a href="../../pages/auth/index.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="recycling-centers-container">
+        <h1>Find Recycling Centers Near You</h1>
+        <p>Locate the nearest electronics recycling centers in your area.</p>
+
+        <div class="search-container">
+            <input type="text" id="locationInput" placeholder="Enter your zip code or city">
+            <button id="searchButton">Search</button>
+        </div>
+
+        <div id="map" class="map-container"></div>
+
+        <div id="centersList" class="centers-list">
+            <!-- Centers will be dynamically added here -->
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-content">
+            <p class="footer-email">Email: <a href="mailto:info@ecotechrecycle.com">info@ecotechrecycle.com</a></p>
+            <p class="footer-copyright">&copy; 2024 EcoTech Recycle. All rights reserved.</p>
+        </div>
+    </footer> >
+    
+    <script src="../../js/main.js"></script>
+    <script src="../../js/recycling-centers.js" type="module"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyRRTC3iu83e7tl_KDBwEiXBg7oSQQfzY&callback=initMap" async defer></script>
+</body>
+</html>

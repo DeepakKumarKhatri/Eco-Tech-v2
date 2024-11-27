@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Tracking</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/dashboards/style.css">
+    <link rel="stylesheet" href="../../css/dashboards/recycle-history.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>EcoTech Recycle</h2>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/pages/user-dashboard/index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="/pages/user-dashboard/item-submission.html"><i class="fas fa-recycle"></i> My Recycling</a></li>
+                    <li><a href="/pages/user-dashboard/history-tracking.html" class="active"><i class="fas fa-calendar-alt"></i> Recycle History</a></li>
+                    <li><a href="/pages/user-dashboard/rewards-redemption.html"><i class="fas fa-gift"></i> Rewards</a></li>
+                    <li><a href="/pages/user-dashboard/dyanmic-search.html"><i class="fas fa-globe"></i> Dyanmic Search</a></li>
+                    <li><a href="/pages/user-dashboard/request-pickup.html"><i class="fas fa-hand-holding"></i> Request Pickup</a></li>
+                    <li><a href="/pages/user-dashboard/profile-management.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1>History Tracking</h1>
+                <div class="user-info">
+                    <span>Welcome, John</span>
+                    <img src="../../assets/images/demo_user.png" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="/pages/user-dashboard/profile-management.html" id="profileLink">Profile</a>
+                        <a href="#" id="logoutLink">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="recycle-history">
+                    <div class="history-filters">
+                        <div class="filter-group">
+                            <label for="dateRange">Date Range:</label>
+                            <select id="dateRange">
+                                <option value="7">Last 7 days</option>
+                                <option value="30">Last 30 days</option>
+                                <option value="90">Last 3 months</option>
+                                <option value="365">Last year</option>
+                                <option value="all">All time</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="itemType">Item Type:</label>
+                            <select id="itemType">
+                                <option value="all">All Types</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="batteries">Batteries</option>
+                                <option value="appliances">Appliances</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <button id="applyFilters" class="btn-primary">Apply Filters</button>
+                    </div>
+
+                    <div class="history-summary">
+                        <div class="summary-card">
+                            <h3>Total Items Recycled</h3>
+                            <p class="summary-value" id="totalItems">0</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>Total Weight Recycled</h3>
+                            <p class="summary-value" id="totalWeight">0 kg</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>CO2 Emissions Saved</h3>
+                            <p class="summary-value" id="co2Saved">0 kg</p>
+                        </div>
+                    </div>
+
+                    <div class="history-list" id="historyList">
+                        <!-- Recycling history items will be dynamically added here -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/recycle-history.js"></script>
+    <script src="../../js/utils/helper.js"></script>
+    <script src="../../js/user-dashboard.js" ></script>
+</body>
+</html>

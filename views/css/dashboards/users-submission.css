@@ -1,0 +1,162 @@
+.approval-filters {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+}
+
+.filter-group label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.filter-group select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.btn-primary, .btn-secondary, .btn-tertiary {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #2ecc71;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #27ae60;
+}
+
+.btn-secondary {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #c0392b;
+}
+
+.btn-tertiary {
+    background-color: #ecf0f1;
+    color: #34495e;
+}
+
+.btn-tertiary:hover {
+    background-color: #bdc3c7;
+}
+
+.approval-list {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.approval-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.approval-item:last-child {
+    border-bottom: none;
+}
+
+.approval-item-details h3 {
+    margin: 0 0 0.5rem 0;
+}
+
+.approval-item-details p {
+    margin: 0;
+    color: #666;
+}
+
+.approval-item-status {
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #f39c12;
+}
+
+.status-approved {
+    color: #2ecc71;
+}
+
+.status-rejected {
+    color: #e74c3c;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .approval-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .approval-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .approval-item-status {
+        margin-top: 0.5rem;
+    }
+
+    .modal-content {
+        margin: 5% auto;
+        padding: 1.5rem;
+    }
+}

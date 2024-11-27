@@ -1,0 +1,131 @@
+.pickup-request-container {
+    max-width: 800px;
+    margin: 6rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-bottom: 6rem;
+}
+
+.pickup-request-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.pickup-request-container > p {
+    margin-bottom: 2rem;
+}
+
+.pickup-form {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.pickup-request-cards {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.pickup-request-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pickup-request-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.pickup-request-card p {
+    margin: 0.25rem 0;
+}
+
+.pickup-request-card .status {
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.pickup-request-card .status.pending {
+    background-color: #ffd700;
+    color: #000000;
+}
+
+.pickup-request-card .status.approved {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+.pickup-request-card .status.rejected {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.pickup-request-card .cancel-btn {
+    background-color: #f44336;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.pickup-request-card .cancel-btn:hover {
+    background-color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+    .pickup-request-container {
+        padding: 1rem;
+    }
+}
+

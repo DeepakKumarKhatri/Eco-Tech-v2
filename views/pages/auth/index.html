@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/home/auth.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="/index.html">EcoTech Recycle</a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="../../pages/features/about-us.html">About Us</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropbtn">
+                        Features
+                        <span class="dropdown-icon">&#9662;</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../../pages/features/recycling-guide.html">Recycling Guide</a></li>
+                        <li><a href="../../pages/features/community-challenges.html">Community Challenges</a></li>
+                        <li><a href="../../pages/features/pickup-request.html">Request Pickup</a></li>
+                        <li><a href="../../pages/features/recycling-centers.html">Recycling Centers</a></li>
+                        <li><a href="../../pages/features/rewards-program.html">Rewards Program</a></li>
+                        <li><a href="../../pages/features/educational-resources.html">Educational Resources</a></li>
+                        <li><a href="../../pages/features/impact-calculator.html">Impact Calculator</a></li>
+                        <li><a href="../../pages/features/marketplace.html">E-Waste Marketplace</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../pages/feedback/index.html">Feedback</a></li>
+                <li><a href="../../pages/auth/index.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="auth-container">
+            <div class="auth-box">
+                <div class="auth-header">
+                    <h2 id="authTitle">Login</h2>
+                    <p id="authDescription">Welcome back! Please login to your account.</p>
+                </div>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="auth-button">Login</button>
+                </form>
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirm Password</label>
+                        <input type="password" id="registerConfirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="auth-button">Register</button>
+                </form>
+                <p class="auth-switch">
+                    <span id="loginText">New user? <a href="#" id="showRegister">Sign up</a></span>
+                    <span id="registerText" class="hidden">Already have an account? <a href="#" id="showLogin">Login</a></span>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-content">
+            <p class="footer-email">Email: <a href="mailto:info@ecotechrecycle.com">info@ecotechrecycle.com</a></p>
+            <p class="footer-copyright">&copy; 2024 EcoTech Recycle. All rights reserved.</p>
+        </div>
+    </footer> 
+    
+    <script src="../../js/main.js"></script>
+    <script type="module" src="../../js/auth.js"></script>
+    <script src="../../js/feedback.js" type="module"></script>
+</body>
+</html>

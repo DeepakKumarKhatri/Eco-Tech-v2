@@ -1,0 +1,126 @@
+/* search.css */
+.search-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+.search-bar button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: #2ecc71;
+    color: #ffffff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #27ae60;
+}
+
+.search-filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+}
+
+.filter-group label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.filter-group select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-results {
+    display: grid;
+    gap: 1rem;
+}
+
+.result-item {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.result-item-details h3 {
+    margin: 0 0 0.5rem 0;
+}
+
+.result-item-details p {
+    margin: 0;
+    color: #666;
+}
+
+.result-item-category {
+    font-weight: bold;
+    color: #2ecc71;
+    text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+    .search-section {
+        padding: 1rem;
+    }
+
+    .search-bar {
+        flex-direction: column;
+    }
+
+    .search-bar input {
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+
+    .search-bar button {
+        border-radius: 4px;
+    }
+
+    .search-filters {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .result-item-category {
+        margin-top: 0.5rem;
+    }
+}

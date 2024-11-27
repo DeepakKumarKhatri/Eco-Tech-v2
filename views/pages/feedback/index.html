@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback and Reporting - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="../../css/home/feedback.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="/index.html">EcoTech Recycle</a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="../../pages/features/about-us.html">About Us</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropbtn">
+                        Features
+                        <span class="dropdown-icon">&#9662;</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../../pages/features/recycling-guide.html">Recycling Guide</a></li>
+                        <li><a href="../../pages/features/community-challenges.html">Community Challenges</a></li>
+                        <li><a href="../../pages/features/pickup-request.html">Request Pickup</a></li>
+                        <li><a href="../../pages/features/recycling-centers.html">Recycling Centers</a></li>
+                        <li><a href="../../pages/features/rewards-program.html">Rewards Program</a></li>
+                        <li><a href="../../pages/features/educational-resources.html">Educational Resources</a></li>
+                        <li><a href="../../pages/features/impact-calculator.html">Impact Calculator</a></li>
+                        <li><a href="../../pages/features/marketplace.html">E-Waste Marketplace</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../pages/feedback/index.html">Feedback</a></li>
+                <li><a href="../../pages/auth/index.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="feedback-container">
+        <h1>Feedback and Reporting</h1>
+        <p>We value your input! Please use this form to provide feedback or report any issues you've encountered.</p>
+
+        <form id="feedbackForm" class="feedback-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <select id="subject" name="subject" required>
+                    <option value="">Select a subject</option>
+                    <option value="general_feedback">General Feedback</option>
+                    <option value="pickup_issue">Pickup Issue</option>
+                    <option value="website_issue">Website Issue</option>
+                    <option value="suggestion">Suggestion</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="rating">Rate your experience:</label>
+                <div class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" required>
+                    <label for="star5" title="5 stars"></label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4" title="4 stars"></label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3" title="3 stars"></label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2" title="2 stars"></label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1" title="1 star"></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="attachment">Attach a file (optional):</label>
+                <input type="file" id="attachment" name="attachment">
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Feedback</button>
+        </form>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-content">
+            <p class="footer-email">Email: <a href="mailto:info@ecotechrecycle.com">info@ecotechrecycle.com</a></p>
+            <p class="footer-copyright">&copy; 2024 EcoTech Recycle. All rights reserved.</p>
+        </div>
+    </footer> 
+    
+    <script src="../../js/main.js"></script>
+    <script src="../../js/feedback.js" type="module"></script>
+</body>
+</html>

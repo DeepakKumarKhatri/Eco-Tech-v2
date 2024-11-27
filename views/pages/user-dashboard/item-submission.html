@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/dashboards/style.css">
+    <link rel="stylesheet" href="../../css/dashboards/item-submission.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>EcoTech Recycle</h2>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/pages/user-dashboard/index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="/pages/user-dashboard/item-submission.html" class="active"><i class="fas fa-recycle"></i> My Recycling</a></li>
+                    <li><a href="/pages/user-dashboard/history-tracking.html"><i class="fas fa-calendar-alt"></i> Recycle History</a></li>
+                    <li><a href="/pages/user-dashboard/rewards-redemption.html"><i class="fas fa-gift"></i> Rewards</a></li>
+                    <li><a href="/pages/user-dashboard/dyanmic-search.html"><i class="fas fa-globe"></i> Dyanmic Search</a></li>
+                    <li><a href="/pages/user-dashboard/request-pickup.html"><i class="fas fa-hand-holding"></i> Request Pickup</a></li>
+                    <li><a href="/pages/user-dashboard/profile-management.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1>Item Submission</h1>
+                <div class="user-info">
+                    <span>Welcome, John</span>
+                    <img src="../../assets/images/demo_user.png" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="/pages/user-dashboard/profile-management.html" id="profileLink">Profile</a>
+                        <a href="#" id="logoutLink">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="item-submission">
+                    <h2>Submit a New Item for Recycling</h2>
+                    <form id="itemSubmissionForm" class="submission-form">
+                        <div class="form-group">
+                            <label for="itemType">Item Type</label>
+                            <select id="itemType" name="itemType" required>
+                                <option value="">Select Item Type</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="batteries">Batteries</option>
+                                <option value="appliances">Appliances</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemDescription">Description</label>
+                            <textarea id="itemDescription" name="itemDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemCondition">Condition</label>
+                            <select id="itemCondition" name="itemCondition" required>
+                                <option value="">Select Condition</option>
+                                <option value="new">New</option>
+                                <option value="likeNew">Like New</option>
+                                <option value="good">Good</option>
+                                <option value="fair">Fair</option>
+                                <option value="poor">Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemWeight">Estimated Weight (kg)</label>
+                            <input type="number" id="itemWeight" name="itemWeight" min="0" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemImages">Images</label>
+                            <input type="file" id="itemImages" name="itemImages" accept="image/*" multiple>
+                            <div id="imagePreview" class="image-preview"></div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary">Submit Item</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="item-management">
+                    <h2>Manage Submitted Items</h2>
+                    <div id="itemList"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Item</h2>
+            <form id="editItemForm">
+                <div class="form-group">
+                    <label for="editItemDescription">Description</label>
+                    <textarea id="editItemDescription" name="itemDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editItemWeight">Estimated Weight (kg)</label>
+                    <input type="number" id="editItemWeight" name="itemWeight" min="0" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="updateItemBtn" class="btn-primary">Update Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/item-submission.js"></script>
+    <script src="../../js/utils/helper.js"></script>
+    <script src="../../js/user-dashboard.js" ></script>
+</body>
+</html>

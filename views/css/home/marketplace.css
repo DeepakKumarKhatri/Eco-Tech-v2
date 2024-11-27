@@ -1,0 +1,211 @@
+.marketplace {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.marketplace h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.marketplace > p {
+    margin-bottom: 2rem;
+}
+
+.marketplace-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filter-btn {
+    background-color: #f4f4f4;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.product-item {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+}
+
+.product-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-item h3 {
+    padding: 1rem 1rem 0.5rem;
+    color: var(--primary-color);
+}
+
+.product-item p {
+    padding: 0 1rem;
+    flex-grow: 1;
+}
+
+.product-item .price {
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.buy-btn {
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buy-btn:hover {
+    background-color: #45a049;
+}
+
+.sell-cta {
+    margin-top: 3rem;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.sell-cta h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.sell-cta p {
+    margin-bottom: 1.5rem;
+}
+
+.sell-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.sell-btn:hover {
+    background-color: #45a049;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#sellForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#sellForm label {
+    font-weight: bold;
+}
+
+#sellForm input,
+#sellForm select,
+#sellForm textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#sellForm button {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#sellForm button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .marketplace {
+        padding: 1rem;
+    }
+
+    .marketplace-filters {
+        flex-wrap: wrap;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}

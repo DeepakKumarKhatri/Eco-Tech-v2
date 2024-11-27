@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environmental Impact Calculator - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="../../css/home/impact-calculator.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="/index.html">EcoTech Recycle</a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../pages/features/about-us.html">About Us</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropbtn">
+                        Features
+                        <span class="dropdown-icon">&#9662;</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../../pages/features/recycling-guide.html">Recycling Guide</a></li>
+                        <li><a href="../../pages/features/community-challenges.html">Community Challenges</a></li>
+                        <li><a href="../../pages/features/pickup-request.html">Request Pickup</a></li>
+                        <li><a href="../../pages/features/recycling-centers.html">Recycling Centers</a></li>
+                        <li><a href="../../pages/features/rewards-program.html">Rewards Program</a></li>
+                        <li><a href="../../pages/features/educational-resources.html">Educational Resources</a></li>
+                        <li><a href="../../pages/features/impact-calculator.html">Impact Calculator</a></li>
+                        <li><a href="../../pages/features/marketplace.html">E-Waste Marketplace</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../pages/feedback/index.html">Feedback</a></li>
+                <li><a href="../../pages/auth/index.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="impact-calculator-container">
+        <h1>Environmental Impact Calculator</h1>
+        <p>See the positive impact of your electronics recycling efforts on the environment.</p>
+
+        <form id="calculatorForm" class="calculator-form">
+            <div class="form-group">
+                <label for="smartphones">Smartphones:</label>
+                <input type="number" id="smartphones" name="smartphones" min="0" value="0">
+            </div>
+            <div class="form-group">
+                <label for="laptops">Laptops:</label>
+                <input type="number" id="laptops" name="laptops" min="0" value="0">
+            </div>
+            <div class="form-group">
+                <label for="desktops">Desktop Computers:</label>
+                <input type="number" id="desktops" name="desktops" min="0" value="0">
+            </div>
+            <div class="form-group">
+                <label for="tablets">Tablets:</label>
+                <input type="number" id="tablets" name="tablets" min="0" value="0">
+            </div>
+            <div class="form-group">
+                <label for="printers">Printers:</label>
+                <input type="number" id="printers" name="printers" min="0" value="0">
+            </div>
+            <button type="submit" class="calculate-btn">Calculate Impact</button>
+        </form>
+
+        <div id="results" class="results hidden">
+            <h2>Your Environmental Impact</h2>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <h3>CO2 Emissions Saved</h3>
+                    <p id="co2Saved">0 kg</p>
+                </div>
+                <div class="impact-card">
+                    <h3>Water Saved</h3>
+                    <p id="waterSaved">0 liters</p>
+                </div>
+                <div class="impact-card">
+                    <h3>Energy Saved</h3>
+                    <p id="energySaved">0 kWh</p>
+                </div>
+                <div class="impact-card">
+                    <h3>Raw Materials Conserved</h3>
+                    <p id="materialsSaved">0 kg</p>
+                </div>
+            </div>
+            <div class="impact-description">
+                <p>By recycling these electronics, you've made a significant positive impact on the environment. Here's what your efforts are equivalent to:</p>
+                <ul id="impactEquivalents"></ul>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-content">
+            <p class="footer-email">Email: <a href="mailto:info@ecotechrecycle.com">info@ecotechrecycle.com</a></p>
+            <p class="footer-copyright">&copy; 2024 EcoTech Recycle. All rights reserved.</p>
+        </div>
+    </footer> 
+    
+    <script src="../../js/main.js"></script>
+    <script src="../../js/impact-calculator.js" defer type="module"></script>
+</body>
+</html>

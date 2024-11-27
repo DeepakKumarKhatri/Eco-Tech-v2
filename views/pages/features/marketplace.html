@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Waste Marketplace - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="../../css/home/marketplace.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" href="/index.html">EcoTech Recycle</a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../pages/features/about-us.html">About Us</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropbtn">
+                        Features
+                        <span class="dropdown-icon">&#9662;</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../../pages/features/recycling-guide.html">Recycling Guide</a></li>
+                        <li><a href="../../pages/features/community-challenges.html">Community Challenges</a></li>
+                        <li><a href="../../pages/features/pickup-request.html">Request Pickup</a></li>
+                        <li><a href="../../pages/features/recycling-centers.html">Recycling Centers</a></li>
+                        <li><a href="../../pages/features/rewards-program.html">Rewards Program</a></li>
+                        <li><a href="../../pages/features/educational-resources.html">Educational Resources</a></li>
+                        <li><a href="../../pages/features/impact-calculator.html">Impact Calculator</a></li>
+                        <li><a href="../../pages/features/marketplace.html">E-Waste Marketplace</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../pages/feedback/index.html">Feedback</a></li>
+                <li><a href="../../pages/auth/index.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="marketplace">
+            <h1>E-Waste Marketplace</h1>
+            <p>Buy, sell, or trade refurbished electronics and upcycled e-waste products.</p>
+
+            <div class="marketplace-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="refurbished">Refurbished</button>
+                <button class="filter-btn" data-filter="upcycled">Upcycled</button>
+                <button class="filter-btn" data-filter="parts">Parts</button>
+            </div>
+
+            <div class="product-grid">
+                <div class="product-item" data-type="refurbished">
+                    <img src="../../assets/images/refurbished-laptop.jpg" alt="Refurbished Laptop">
+                    <h3>Refurbished Laptop</h3>
+                    <p>Fully restored laptop with 1-year warranty</p>
+                    <span class="price">$399</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+                <div class="product-item" data-type="upcycled">
+                    <img src="../../assets/images/circuit-board-art.png" alt="Circuit Board Art">
+                    <h3>Circuit Board Wall Art</h3>
+                    <p>Unique wall art made from recycled circuit boards</p>
+                    <span class="price">$89</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+                <div class="product-item" data-type="parts">
+                    <img src="../../assets/images/laptop-battery.jpg" alt="Laptop Battery">
+                    <h3>Laptop Battery</h3>
+                    <p>Replacement battery for various laptop models</p>
+                    <span class="price">$49</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+                <div class="product-item" data-type="refurbished">
+                    <img src="../../assets/images/refurbished-smartphone.png" alt="Refurbished Smartphone">
+                    <h3>Refurbished Smartphone</h3>
+                    <p>Like-new smartphone with 6-month warranty</p>
+                    <span class="price">$249</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+                <div class="product-item" data-type="upcycled">
+                    <img src="../../assets/images/keyboard-planter.png" alt="Keyboard Planter">
+                    <h3>Keyboard Planter</h3>
+                    <p>Unique planter made from an old keyboard</p>
+                    <span class="price">$35</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+                <div class="product-item" data-type="parts">
+                    <img src="../../assets/images/lcd-screen.jpg" alt="LCD Screen">
+                    <h3>LCD Screen</h3>
+                    <p>Replacement LCD screen for various devices</p>
+                    <span class="price">$79</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+
+            <div class="sell-cta">
+                <h2>Have something to sell?</h2>
+                <p>List your refurbished electronics or upcycled creations on our marketplace.</p>
+                <button id="sellItemBtn" class="sell-btn">Sell an Item</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="sellModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sell an Item</h2>
+            <form id="sellForm">
+                <label for="itemName">Item Name:</label>
+                <input type="text" id="itemName" required>
+
+                <label for="itemType">Item Type:</label>
+                <select id="itemType" required>
+                    <option value="">Select a type</option>
+                    <option value="refurbished">Refurbished</option>
+                    <option value="upcycled">Upcycled</option>
+                    <option value="parts">Parts</option>
+                </select>
+
+                <label for="itemPrice">Price ($):</label>
+                <input type="number" id="itemPrice" min="0" step="0.01" required>
+
+                <label for="itemDescription">Description:</label>
+                <textarea id="itemDescription" required></textarea>
+
+                <label for="itemImage">Image:</label>
+                <input type="file" id="itemImage" accept="image/*" required>
+
+                <button type="submit">List Item</button>
+            </form>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="footer-content">
+            <p class="footer-email">Email: <a href="mailto:info@ecotechrecycle.com">info@ecotechrecycle.com</a></p>
+            <p class="footer-copyright">&copy; 2024 EcoTech Recycle. All rights reserved.</p>
+        </div>
+    </footer> 
+    
+    <script src="../../js/main.js"></script>
+    <script src="../../js/marketplace.js"></script>
+    <script src="../../js/impact-calculator.js" defer type="module"></script>
+</body>
+</html>

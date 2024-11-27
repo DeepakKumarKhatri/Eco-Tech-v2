@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg" />
+    <link rel="stylesheet" href="../../css/dashboards/system-users.css" />
+    <link rel="stylesheet" href="../../css/dashboards/style.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/responsive.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2>EcoTech Recycle</h2>
+          <button id="sidebarToggle" class="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <a href="/pages/admin-dashboard/index.html"
+                ><i class="fas fa-home"></i> Dashboard</a
+              >
+            </li>
+            <li>
+              <a href="/pages/admin-dashboard/users-submission.html"
+                ><i class="fas fa-hand-holding-heart"></i> Submissions</a
+              >
+            </li>
+            <li>
+              <a href="/pages/admin-dashboard/reporting.html"
+                ><i class="fas fa-clipboard"></i> Reporting</a
+              >
+            </li>
+            <li>
+              <a href="/pages/admin-dashboard/system-users.html" class="active"
+                ><i class="fas fa-users-between-lines"></i> Users</a
+              >
+            </li>
+            <li>
+              <a href="/pages/admin-dashboard/admin-profile-management.html"
+                ><i class="fas fa-cog"></i> Settings</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="dashboard-header">
+          <h1>All Users</h1>
+          <div class="user-info">
+            <span>Welcome, John</span>
+            <img
+              src="../../assets/images/demo_user.png"
+              alt="User Avatar"
+              class="user-avatar"
+              id="userAvatar"
+            />
+            <div class="dropdown-menu" id="userDropdown">
+              <a
+                href="/pages/user-dashboard/profile-management.html"
+                id="profileLink"
+                >Profile</a
+              >
+              <a href="#" id="logoutLink">Logout</a>
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+
+        </div>
+      </main>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/admin-dashboard.js"></script>
+    <script src="../../js/utils/helper.js"></script>
+    <script src="../../js/system-users.js"></script>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+.educational-resources-container {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-bottom: 6rem;
+}
+
+.educational-resources-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.educational-resources-container > p {
+    margin-bottom: 2rem;
+}
+
+.resource-section {
+    margin-bottom: 3rem;
+}
+
+.resource-section h2 {
+    margin-bottom: 1.5rem;
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.resource-card {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+}
+
+.resource-card h3 {
+    margin-bottom: 1rem;
+}
+
+.resource-card p {
+    margin-bottom: 1rem;
+}
+
+.read-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.video-card {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.video-card iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.video-card h3 {
+    padding: 1rem;
+    text-align: center;
+}
+
+.infographic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.infographic-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.infographic-grid img:hover {
+    transform: scale(1.05);
+}
+
+.download-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.download-list li {
+    margin-bottom: 1rem;
+}
+
+.download-link {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.download-link:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .educational-resources-container {
+        padding: 1rem;
+    }
+
+    .resource-grid,
+    .video-grid,
+    .infographic-grid {
+        grid-template-columns: 1fr;
+    }
+}

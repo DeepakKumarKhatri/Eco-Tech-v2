@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/dashboards/profile-management.css">
+    <link rel="stylesheet" href="../../css/dashboards/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>EcoTech Recycle</h2>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/pages/admin-dashboard/index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="/pages/admin-dashboard/users-submission.html"><i class="fas fa-hand-holding-heart"></i> Submissions</a></li>
+                    <li><a href="/pages/admin-dashboard/reporting.html"><i class="fas fa-clipboard"></i> Reporting</a></li>
+                    <li><a href="/pages/admin-dashboard/system-users.html"><i class="fas fa-users-between-lines"></i> Users</a></li>
+                    <li><a href="/pages/admin-dashboard/admin-profile-management.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span>Welcome, John</span>
+                    <img src="../../assets/images/demo_user.png" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="/pages/user-dashboard/profile-management.html" id="profileLink">Profile</a>
+                        <a href="#" id="logoutLink">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="profile-management">
+                    <div class="profile-image-section">
+                        <img src="../../assets/images/demo_user.png" alt="User Profile" id="profileImage">
+                        <button id="changeProfileImage" class="btn-primary">Change Profile Image</button>
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                    </div>
+                    <form id="profileForm" class="profile-form">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" value="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" value="john.doe@example.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/admin-dashboard.js"></script>
+    <script src="../../js/utils/helper.js"></script>
+    <script src="../../js/admin-profile-management.js"></script>
+</body>
+</html>

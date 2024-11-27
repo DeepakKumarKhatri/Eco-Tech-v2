@@ -1,0 +1,133 @@
+/* recycle-history.css */
+.recycle-history {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.history-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+}
+
+.filter-group label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.filter-group select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #2ecc71;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #27ae60;
+}
+
+.history-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #666;
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+.history-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.history-item {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-item-details h3 {
+    margin: 0 0 0.5rem 0;
+}
+
+.history-item-details p {
+    margin: 0;
+    color: #666;
+}
+
+.history-item-status {
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+@media (max-width: 768px) {
+    .recycle-history {
+        padding: 1rem;
+    }
+
+    .history-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group label {
+        margin-bottom: 0.5rem;
+    }
+
+    .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .history-item-status {
+        margin-top: 0.5rem;
+    }
+}

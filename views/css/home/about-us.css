@@ -1,0 +1,150 @@
+.about-us-container {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.about-us-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.about-us-container section {
+    margin-bottom: 3rem;
+}
+
+.about-us-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.mission-statement p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.story-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.founder-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.impact-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background-color: #f4f4f4;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.process-steps {
+    list-style-type: none;
+    padding: 0;
+    counter-reset: step-counter;
+}
+
+.process-steps li {
+    margin-bottom: 1.5rem;
+    padding-left: 3rem;
+    position: relative;
+}
+
+.process-steps li::before {
+    content: counter(step-counter);
+    counter-increment: step-counter;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.join-us {
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .about-us-container {
+        padding: 1rem;
+    }
+
+    .story-content {
+        flex-direction: column;
+    }
+
+    .founder-image {
+        width: 200px;
+        height: 200px;
+    }
+
+    .impact-stats,
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}

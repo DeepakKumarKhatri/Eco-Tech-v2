@@ -1,0 +1,142 @@
+.rewards-program-container {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rewards-program-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.rewards-program-container > p {
+    margin-bottom: 2rem;
+}
+
+.how-it-works {
+    margin-bottom: 3rem;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 1rem;
+}
+
+.step h3 {
+    margin-bottom: 0.5rem;
+}
+
+.point-system {
+    margin-bottom: 3rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.rewards-catalog {
+    margin-bottom: 3rem;
+}
+
+.rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.reward-card {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.reward-card:hover {
+    transform: translateY(-5px);
+}
+
+.reward-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.reward-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.reward-card p {
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.redeem-btn {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.redeem-btn:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .rewards-program-container {
+        padding: 1rem;
+    }
+
+    .steps {
+        flex-direction: column;
+    }
+
+    .rewards-grid {
+        grid-template-columns: 1fr;
+    }
+}

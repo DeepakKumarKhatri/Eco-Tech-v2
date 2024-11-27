@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - EcoTech Recycle</title>
+    <link rel="icon" type="image/x-icon" href="/assets/svgs/logo.svg">
+    <link rel="stylesheet" href="../../css/dashboards/style.css">
+    <link rel="stylesheet" href="../../css/dashboards/pickup-request.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>EcoTech Recycle</h2>
+                <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/pages/user-dashboard/index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="/pages/user-dashboard/item-submission.html"><i class="fas fa-recycle"></i> My Recycling</a></li>
+                    <li><a href="/pages/user-dashboard/history-tracking.html"><i class="fas fa-calendar-alt"></i> Recycle History</a></li>
+                    <li><a href="/pages/user-dashboard/rewards-redemption.html"><i class="fas fa-gift"></i> Rewards</a></li>
+                    <li><a href="/pages/user-dashboard/dyanmic-search.html"><i class="fas fa-globe"></i> Dyanmic Search</a></li>
+                    <li><a href="/pages/user-dashboard/request-pickup.html" class="active"><i class="fas fa-hand-holding"></i> Request Pickup</a></li>
+                    <li><a href="/pages/user-dashboard/profile-management.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1>Request Pickup</h1>
+                <div class="user-info">
+                    <span>Welcome, John</span>
+                    <img src="../../assets/images/demo_user.png" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="/pages/user-dashboard/profile-management.html" id="profileLink">Profile</a>
+                        <a href="#" id="logoutLink">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <p>Schedule a convenient time for us to collect your recyclable electronics.</p>
+        
+                <form id="pickupRequestForm" class="pickup-form">
+                    <div class="form-group">
+                        <label for="address">Pickup Address:</label>
+                        <textarea id="address" name="pickupAddress" rows="3" required></textarea>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="pickup-date">Preferred Pickup Date:</label>
+                        <input type="date" id="pickup-date" name="pickupDate" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="pickup-time">Preferred Pickup Time:</label>
+                        <select id="pickup-time" name="pickupTime" required>
+                            <option value="">Select a time</option>
+                            <option value="morning">Morning (9am - 12pm)</option>
+                            <option value="afternoon">Afternoon (1pm - 5pm)</option>
+                            <option value="evening">Evening (6pm - 8pm)</option>
+                        </select>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="items">Items for Pickup:</label>
+                        <textarea id="items" name="itemsForPickup" rows="4" placeholder="Please list the items you want to recycle (e.g., 2 laptops, 1 printer, 3 smartphones)" required></textarea>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="special-instructions">Special Instructions (Optional):</label>
+                        <textarea id="special-instructions" name="specialInstructions" rows="3"></textarea>
+                    </div>
+        
+                    <button type="submit" class="submit-btn">Schedule Pickup</button>
+                </form>
+
+                <div id="pickupRequestCards" class="pickup-request-cards">
+                    <!-- Pickup request cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/utils/helper.js"></script>
+    <script src="../../js/pickup-request.js"></script>
+    <script src="../../js/user-dashboard.js"></script>
+</body>
+</html>
+
