@@ -80,14 +80,40 @@ const earnedScoreUser = (value) => {
 
 function calculateCO2Saved(itemType, weight) {
   const co2Factors = {
-    'paper': 1.5,
-    'plastic': 2.5,
-    'metal': 3.5,
-    'glass': 0.5,
-    'electronics': 4.0
+    paper: 1.5,
+    plastic: 2.5,
+    metal: 3.5,
+    glass: 0.5,
+    electronics: 4.0,
   };
   return (co2Factors[itemType] || 2) * weight;
 }
+
+const validateSearchParams = (searchTerm, category, dateRange) => {
+  const sanitizedSearchTerm = searchTerm ? searchTerm.trim() : "";
+
+  const validCategories = [
+    "all",
+    "electronics",
+    "batteries",
+    "appliances",
+    "other",
+  ];
+  const sanitizedCategory = validCategories.includes(category)
+    ? category
+    : "all";
+
+  const validDateRanges = ["all", "7", "30", "90", "365"];
+  const sanitizedDateRange = validDateRanges.includes(dateRange)
+    ? dateRange
+    : "all";
+
+  return {
+    searchTerm: sanitizedSearchTerm,
+    category: sanitizedCategory,
+    dateRange: sanitizedDateRange,
+  };
+};
 
 export {
   createSessionEntry,
@@ -95,4 +121,5 @@ export {
   getSessionEntry,
   earnedScoreUser,
   calculateCO2Saved,
+  validateSearchParams,
 };

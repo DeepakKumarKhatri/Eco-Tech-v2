@@ -672,3 +672,79 @@ export const userUsedPrizes = async (req, res) => {
       .end(JSON.stringify({ message: "Error fetching consumed rewards" }));
   }
 };
+
+export const dynamicSearch = async (req, res) => {
+  try {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const searchParams = url.searchParams;
+    
+    const searchTerm = searchParams.get('searchTerm') || '';
+    const category = searchParams.get('category') || 'all';
+    const dateRange = searchParams.get('dateRange') || 'all';
+
+    const sessionId = cookie.parse(req.headers.cookie || "").uid;
+    if (!sessionId) {
+      return res.writeHead(401, { "Content-Type": "application/json" }).end(
+        JSON.stringify({ message: "Unauthorized" })
+      );
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      return res.writeHead(401, { "Content-Type": "application/json" }).end(
+        JSON.stringify({ message: "Session expired" })
+      );
+    }
+
+    let query = `
+      SELECT 
+        ri.id, 
+        ri.itemType, 
+        ri.description, 
+        ri.weight, 
+        ri.status, 
+        ri.createdAt
+      FROM 
+        RecycleItem ri
+      WHERE 
+        ri.userId = ?
+    `;
+
+    const queryParams = [user.id];
+
+    if (searchTerm.trim()) {
+      query += ` AND (
+        ri.itemType LIKE ? OR 
+        ri.description LIKE ?
+      )`;
+      const searchTermParam = `%${searchTerm}%`;
+      queryParams.push(searchTermParam, searchTermParam);
+    }
+
+    if (category !== 'all') {
+      query += ` AND ri.itemType = ?`;
+      queryParams.push(category);
+    }
+
+    if (dateRange !== 'all') {
+      query += ` AND ri.createdAt >= DATE_SUB(NOW(), INTERVAL ? DAY)`;
+      queryParams.push(parseInt(dateRange, 10));
+    }
+
+    query += ` ORDER BY ri.createdAt DESC`;
+
+    const [results] = await pool.query(query, queryParams);
+
+    res.writeHead(200, { "Content-Type": "application/json" }).end(
+      JSON.stringify(results)
+    );
+  } catch (error) {
+    console.error("Error in dynamic search:", error);
+    res.writeHead(500, { "Content-Type": "application/json" }).end(
+      JSON.stringify({ 
+        message: "Internal server error", 
+        error: error.message 
+      })
+    );
+  }
+};

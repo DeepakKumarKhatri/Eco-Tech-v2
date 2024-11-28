@@ -11,6 +11,7 @@ import {
 import formidable from "formidable";
 import {
   changeItemInformation,
+  dynamicSearch,
   getPrizeForUser,
   newRecycleItem,
   recycleHistoryMetrics,
@@ -151,6 +152,8 @@ const server = http.createServer((req, res) => {
     getPrizeForUser(req, res);
   } else if (route.startsWith("/user-prize-history") && method === "GET") {
     userUsedPrizes(req, res);
+  }else if (route.startsWith("/dyanmic-search") && method === "GET") {
+    dynamicSearch(req, res);
   } else {
     const filePath = path.join(process.cwd(), "views", route);
 
@@ -169,4 +172,4 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   const link = `\x1b[36mhttp://localhost:${PORT}\x1b[0m`;
   console.log(`Server running on ${link}`);
-});
+}); 
