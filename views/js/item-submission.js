@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let i = 0; i < files.length; i++) {
       formData.append("image", files[i]);
-      console.log("Appending file:", files[i]);
     }
 
     try {
@@ -86,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                   "../../assets/images/placeholder.png"
                                 }" alt="Item Image" />
                                 <h3>${item.itemType}</h3>
-                                <p>Condition: ${item.condition}</p>
+                                <p>Condition: ${item.item_condition}</p>
                                 <p>Weight: ${item.weight} kg</p>
                                 <p>${shortDescription}</p>
                                 <button class="edit-btn" data-id="${

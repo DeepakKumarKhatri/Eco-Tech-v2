@@ -4,6 +4,7 @@ import cookie from "cookie";
 import pool from "../connection.js";
 import fs from "fs";
 import { IncomingForm } from "formidable";
+import { earnedScoreUser } from "../utils.js";
 
 export const recyleItems = async (req, res) => {
   try {
@@ -167,23 +168,6 @@ export const changeItemInformation = async (data, req, res) => {
   }
 };
 
-const calculatePoints = (condition) => {
-  switch (condition) {
-    case "new":
-      return 300;
-    case "likeNew":
-      return 150;
-    case "good":
-      return 100;
-    case "fair":
-      return 50;
-    case "poor":
-      return 25;
-    default:
-      return 0;
-  }
-};
-
 export const newRecycleItem = async (data, req, res) => {
   try {
     let connection;
@@ -260,7 +244,7 @@ export const newRecycleItem = async (data, req, res) => {
       ? data.itemWeight[0]
       : data.itemWeight;
 
-    const earnedPoints = calculatePoints(itemCondition);
+    const earnedPoints = earnedScoreUser(itemCondition);
 
     const itemData = {
       itemType,

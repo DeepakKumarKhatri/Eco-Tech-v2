@@ -65,4 +65,22 @@ async function removeSessionEntry(sessionId) {
   }
 }
 
-export { createSessionEntry, removeSessionEntry, getSessionEntry };
+const scoreTable = [
+  { condition: "new", score: 300 },
+  { condition: "likeNew", score: 150 },
+  { condition: "good", score: 100 },
+  { condition: "fair", score: 50 },
+  { condition: "poor", score: 25 },
+];
+
+const earnedScoreUser = (value) => {
+  const match = scoreTable.find((item) => item.condition === value);
+  return match ? match.score : 0;
+};
+
+export {
+  createSessionEntry,
+  removeSessionEntry,
+  getSessionEntry,
+  earnedScoreUser,
+};
