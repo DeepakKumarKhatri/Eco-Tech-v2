@@ -31,7 +31,7 @@ async function getSessionEntry(sessionId) {
     }
     const session = sessionRows[0];
     if (new Date() > new Date(session.expiresAt)) {
-      await connection.query("DELETE FROM sessions WHERE sessionId = ?", [
+      await connection.query("DELETE FROM session WHERE sessionId = ?", [
         sessionId,
       ]);
       connection.release();

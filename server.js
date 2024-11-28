@@ -25,6 +25,7 @@ import {
   userPrizes,
   userUsedPrizes,
 } from "./services/user_recycle.js";
+import { userHomeData } from "./services/system.js";
 
 const PORT = 8000;
 
@@ -172,6 +173,8 @@ const server = http.createServer((req, res) => {
       }
       createPickupRequest(body, req, res);
     });
+  } else if (route.startsWith("/user-home-data") && method === "GET") {
+    userHomeData(req, res);
   } else {
     const filePath = path.join(process.cwd(), "views", route);
 
