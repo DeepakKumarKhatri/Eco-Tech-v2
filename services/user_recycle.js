@@ -5,6 +5,8 @@ import pool from "../connection.js";
 import fs from "fs";
 import { IncomingForm } from "formidable";
 import { earnedScoreUser } from "../utils.js";
+import url from "url";
+import querystring from "querystring";
 
 export const recyleItems = async (req, res) => {
   try {
@@ -405,5 +407,73 @@ export const removeRecyleItem = async (req, res) => {
         error: error.message,
       })
     );
+  }
+};
+
+export const recycleHistoryMetrics = async (req, res) => {
+  try {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Unauthorized" }));
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    const parsedUrl = url.parse(req.url);
+    const query = querystring.parse(parsedUrl.query);
+
+    let sqlQuery = "SELECT * FROM RecycleItem WHERE userId = ?";
+    const queryParams = [user.id];
+
+    // Allowed date ranges
+    const allowedDateRanges = ["1", "7", "30", "365", "all"];
+
+    if (query.dateRange && allowedDateRanges.includes(query.dateRange)) {
+      if (query.dateRange !== "all") {
+        const daysAgo = parseInt(query.dateRange, 10);
+        sqlQuery += " AND createdAt >= DATE_SUB(CURDATE(), INTERVAL ? DAY)";
+        queryParams.push(daysAgo);
+      }
+    } else if (query.dateRange) {
+      // Invalid dateRange value
+      res.writeHead(400, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Invalid date range" }));
+    }
+
+    if (query.itemType && query.itemType !== "all") {
+      sqlQuery += " AND itemType = ?";
+      queryParams.push(query.itemType);
+    }
+
+    const connection = await pool.getConnection();
+
+    const [items] = await connection.execute(sqlQuery, queryParams);
+
+    const totalItems = items.length;
+    const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
+    const co2Saved = totalWeight * 2.5;
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        items,
+        summary: {
+          totalItems,
+          totalWeight,
+          co2Saved,
+        },
+      })
+    );
+  } catch (error) {
+    console.error("Error in recycle history API:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Server Error", error: error.message }));
   }
 };

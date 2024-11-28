@@ -78,9 +78,21 @@ const earnedScoreUser = (value) => {
   return match ? match.score : 0;
 };
 
+function calculateCO2Saved(itemType, weight) {
+  const co2Factors = {
+    'paper': 1.5,
+    'plastic': 2.5,
+    'metal': 3.5,
+    'glass': 0.5,
+    'electronics': 4.0
+  };
+  return (co2Factors[itemType] || 2) * weight;
+}
+
 export {
   createSessionEntry,
   removeSessionEntry,
   getSessionEntry,
   earnedScoreUser,
+  calculateCO2Saved,
 };

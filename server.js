@@ -12,6 +12,7 @@ import formidable from "formidable";
 import {
   changeItemInformation,
   newRecycleItem,
+  recycleHistoryMetrics,
   recyleItem,
   recyleItems,
   removeRecyleItem,
@@ -136,7 +137,10 @@ const server = http.createServer((req, res) => {
       }
       changeItemInformation({ ...fields }, req, res);
     });
-  } else {
+  } else if (route.startsWith("/recycle-history-metrics") && method === "GET") {
+    recycleHistoryMetrics(req, res);
+  }
+  else {
     const filePath = path.join(process.cwd(), "views", route);
 
     // Check if the requested file exists
