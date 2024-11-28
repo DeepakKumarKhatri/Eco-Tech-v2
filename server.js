@@ -10,7 +10,10 @@ import {
 } from "./services/system_user.js";
 import formidable from "formidable";
 import {
+  allPickupRequests,
   changeItemInformation,
+  createPickupRequest,
+  deletePickupRequest,
   dynamicSearch,
   getPrizeForUser,
   newRecycleItem,
@@ -152,8 +155,23 @@ const server = http.createServer((req, res) => {
     getPrizeForUser(req, res);
   } else if (route.startsWith("/user-prize-history") && method === "GET") {
     userUsedPrizes(req, res);
-  }else if (route.startsWith("/dyanmic-search") && method === "GET") {
+  } else if (route.startsWith("/dyanmic-search") && method === "GET") {
     dynamicSearch(req, res);
+  } else if (route.startsWith("/all-pickup-requests") && method === "GET") {
+    allPickupRequests(req, res);
+  } else if (
+    route.startsWith("/delete-pickup-request") &&
+    method === "DELETE"
+  ) {
+    deletePickupRequest(req, res);
+  } else if (route === "/create-pickup-request" && method === "POST") {
+    parseJSONBody(req, (err, body) => {
+      if (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "Invalid JSON" }));
+      }
+      createPickupRequest(body, req, res);
+    });
   } else {
     const filePath = path.join(process.cwd(), "views", route);
 
@@ -172,4 +190,4 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   const link = `\x1b[36mhttp://localhost:${PORT}\x1b[0m`;
   console.log(`Server running on ${link}`);
-}); 
+});

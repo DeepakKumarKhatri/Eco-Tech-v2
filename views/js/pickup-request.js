@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     pickupDateInput.min = tomorrow.toISOString().split('T')[0];
 
-    // Fetch and display pickup requests
     fetchPickupRequests();
 
     pickupRequestForm.addEventListener('submit', async (e) => {
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('/api/pickup-requests', {
+            const response = await fetch('/create-pickup-request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchPickupRequests() {
         try {
-            const response = await fetch('/api/pickup-requests', {
+            const response = await fetch('/all-pickup-requests', {
                 credentials: 'include',
             });
 
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (confirmCancel) {
             try {
-                const response = await fetch(`/api/pickup-requests/${requestId}`, {
+                const response = await fetch(`/delete-pickup-request/${requestId}`, {
                     method: 'DELETE',
                     credentials: 'include',
                 });

@@ -677,23 +677,23 @@ export const dynamicSearch = async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const searchParams = url.searchParams;
-    
-    const searchTerm = searchParams.get('searchTerm') || '';
-    const category = searchParams.get('category') || 'all';
-    const dateRange = searchParams.get('dateRange') || 'all';
+
+    const searchTerm = searchParams.get("searchTerm") || "";
+    const category = searchParams.get("category") || "all";
+    const dateRange = searchParams.get("dateRange") || "all";
 
     const sessionId = cookie.parse(req.headers.cookie || "").uid;
     if (!sessionId) {
-      return res.writeHead(401, { "Content-Type": "application/json" }).end(
-        JSON.stringify({ message: "Unauthorized" })
-      );
+      return res
+        .writeHead(401, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Unauthorized" }));
     }
 
     const user = await getSessionEntry(sessionId);
     if (!user) {
-      return res.writeHead(401, { "Content-Type": "application/json" }).end(
-        JSON.stringify({ message: "Session expired" })
-      );
+      return res
+        .writeHead(401, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Session expired" }));
     }
 
     let query = `
@@ -721,12 +721,12 @@ export const dynamicSearch = async (req, res) => {
       queryParams.push(searchTermParam, searchTermParam);
     }
 
-    if (category !== 'all') {
+    if (category !== "all") {
       query += ` AND ri.itemType = ?`;
       queryParams.push(category);
     }
 
-    if (dateRange !== 'all') {
+    if (dateRange !== "all") {
       query += ` AND ri.createdAt >= DATE_SUB(NOW(), INTERVAL ? DAY)`;
       queryParams.push(parseInt(dateRange, 10));
     }
@@ -735,16 +735,154 @@ export const dynamicSearch = async (req, res) => {
 
     const [results] = await pool.query(query, queryParams);
 
-    res.writeHead(200, { "Content-Type": "application/json" }).end(
-      JSON.stringify(results)
-    );
+    res
+      .writeHead(200, { "Content-Type": "application/json" })
+      .end(JSON.stringify(results));
   } catch (error) {
     console.error("Error in dynamic search:", error);
     res.writeHead(500, { "Content-Type": "application/json" }).end(
-      JSON.stringify({ 
-        message: "Internal server error", 
-        error: error.message 
+      JSON.stringify({
+        message: "Internal server error",
+        error: error.message,
       })
     );
+  }
+};
+
+export const allPickupRequests = async (req, res) => {
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const sessionId = cookies.uid;
+
+  if (!sessionId) {
+    res.writeHead(401, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ message: "Unauthorized" }));
+  }
+
+  const user = await getSessionEntry(sessionId);
+  if (!user) {
+    res.writeHead(401, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ message: "Session expired" }));
+  }
+
+  const connection = await pool.getConnection();
+  try {
+    const [requests] = await connection.execute(
+      "SELECT * FROM PickupRequest WHERE userId = ? ORDER BY createdAt DESC",
+      [user.id]
+    );
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ requests }));
+  } catch (error) {
+    console.error("Error fetching pickup requests:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error" }));
+  } finally {
+    connection.release();
+  }
+};
+
+export const createPickupRequest = async (body, req, res) => {
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const sessionId = cookies.uid;
+
+  if (!sessionId) {
+    res.writeHead(401, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ message: "Unauthorized" }));
+  }
+
+  const user = await getSessionEntry(sessionId);
+  if (!user) {
+    res.writeHead(401, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ message: "Session expired" }));
+  }
+
+  try {
+    const {
+      pickupAddress,
+      pickupDate,
+      pickupTime,
+      itemsForPickup,
+      specialInstructions,
+    } = body;
+
+    const connection = await pool.getConnection();
+    try {
+      const [result] = await connection.execute(
+        "INSERT INTO PickupRequest (userId, pickupAddress, pickupDate, pickupTime, itemsForPickup, specialInstructions, status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+          user.id,
+          pickupAddress,
+          pickupDate,
+          pickupTime,
+          itemsForPickup,
+          specialInstructions,
+          "PENDING",
+        ]
+      );
+
+      res.writeHead(201, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Pickup request created successfully",
+          id: result.insertId,
+        })
+      );
+    } catch (error) {
+      console.error("Error creating pickup request:", error);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Internal server error" }));
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    res.writeHead(400, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Invalid request body" }));
+  }
+};
+
+export const deletePickupRequest = async (req, res) => {
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const sessionId = cookies.uid;
+
+  if (!sessionId) {
+    res.writeHead(401, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ message: "Unauthorized" }));
+  }
+
+  const user = await getSessionEntry(sessionId);
+  if (!user) {
+    res.writeHead(401, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ message: "Session expired" }));
+  }
+
+  const requestId = req.url.split("/").pop();
+
+  const connection = await pool.getConnection();
+  try {
+    const [result] = await connection.execute(
+      "DELETE FROM PickupRequest WHERE id = ? AND userId = ? AND status = ?",
+      [requestId, user.id, "PENDING"]
+    );
+
+    if (result.affectedRows === 0) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          message: "Pickup request not found or not cancellable",
+        })
+      );
+    } else {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({ message: "Pickup request cancelled successfully" })
+      );
+    }
+  } catch (error) {
+    console.error("Error cancelling pickup request:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error" }));
+  } finally {
+    connection.release();
   }
 };
