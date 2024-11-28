@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Crousal
 document.addEventListener('DOMContentLoaded', function () {
     let currentIndex = 0;
     const slides = document.querySelectorAll('.quote-slide');
@@ -26,21 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(function () {
         currentIndex = (currentIndex + 1) % totalSlides;
         showSlide(currentIndex);
-    }, 3000); // Change every 3 seconds
+    }, 3000);
 });
-
-function loadComponent(file, elementId) {
-    fetch(file)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById(elementId).innerHTML = data;
-        })
-        .catch(error => console.error('Error loading component:', error));
-}
-
-// Load the header and footer
-loadComponent('../pages/components/header.html', 'header-placeholder');
-loadComponent('../pages/components/footer.html', 'footer-placeholder');
 
 document.addEventListener("DOMContentLoaded", () => {
     const dropdownMenu = document.querySelector(".dropdown-menu");

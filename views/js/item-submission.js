@@ -57,8 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(`Received non-JSON response: ${text}`);
       }
     } catch (error) {
-      console.error("Error adding item:", error);
-      alert("An error occurred while adding the item: " + error.message);
+      alert(error.message);
     }
   });
 
@@ -82,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="item-card">
                                 <img src="${
                                   item.imageUrl ||
-                                  "../../assets/images/placeholder.png"
+                                  "../../assets/images/user_placeholder.png"
                                 }" alt="Item Image" />
                                 <h3>${item.itemType}</h3>
                                 <p>Condition: ${item.item_condition}</p>
@@ -98,21 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .join("");
         } else {
-          throw new Error(result.message || "Failed to fetch items");
+          throw new Error(result.message);
         }
-      } else {
-        const text = await response.text();
-        throw new Error(`Received non-JSON response: ${text}`);
       }
     } catch (error) {
-      console.error("Error fetching items:", error);
-      alert("Failed to fetch items: " + error.message);
+      alert(error.message);
     }
   }
-
   fetchItems();
 
-  // Delete item functionality
   itemList.addEventListener("click", async (e) => {
     if (e.target.classList.contains("delete-btn")) {
       const itemId = e.target.dataset.id;
@@ -129,13 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-
-          const result = await response.json();
           alert("Item deleted successfully!");
           fetchItems();
         } catch (error) {
-          console.error("Error deleting item:", error);
-          alert("Failed to delete item: " + error.message);
+          alert(error.message);
         }
       }
     }
@@ -161,8 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("updateItemBtn").dataset.id = itemId;
         openModal();
       } catch (error) {
-        console.error("Error fetching item:", error);
-        alert("Failed to fetch item: " + error.message);
+        alert(error.message);
       }
     }
   });
@@ -187,8 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeModal();
         fetchItems();
       } catch (error) {
-        console.error("Error updating item:", error);
-        alert("Failed to update item: " + error.message);
+        alert(error.message);
       }
     });
 

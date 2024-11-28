@@ -35,8 +35,8 @@
             <header class="dashboard-header">
                 <h1>History Tracking</h1>
                 <div class="user-info">
-                    <span>Welcome, John</span>
-                    <img src="../../assets/images/demo_user.png" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <span></span>
+                    <img src="../../assets/images/user_placeholder.png" alt="User Avatar" class="user-avatar" id="userAvatar">
                     <div class="dropdown-menu" id="userDropdown">
                         <a href="/pages/user-dashboard/profile-management.html" id="profileLink">Profile</a>
                         <a href="#" id="logoutLink">Logout</a>
@@ -73,15 +73,15 @@
                     <div class="history-summary">
                         <div class="summary-card">
                             <h3>Total Items Recycled</h3>
-                            <p class="summary-value" id="totalItems">0</p>
+                            <p class="summary-value" id="totalItems"></p>
                         </div>
                         <div class="summary-card">
                             <h3>Total Weight Recycled</h3>
-                            <p class="summary-value" id="totalWeight">0 kg</p>
+                            <p class="summary-value" id="totalWeight"></p>
                         </div>
                         <div class="summary-card">
                             <h3>CO2 Emissions Saved</h3>
-                            <p class="summary-value" id="co2Saved">0 kg</p>
+                            <p class="summary-value" id="co2Saved"></p>
                         </div>
                     </div>
 
@@ -96,10 +96,7 @@
             </div>
         </main>
     </div>
-
-    <script src="../../js/main.js"></script>
+    <script src="../../js/dropdown_controller.js" ></script>
     <script src="../../js/recycle-history.js"></script>
-    <script src="../../js/utils/helper.js"></script>
-    <script src="../../js/user-dashboard.js" ></script>
 </body>
 </html>

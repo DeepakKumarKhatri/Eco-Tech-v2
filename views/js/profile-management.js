@@ -21,28 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
-
-  const sidebar = document.getElementById("sidebar");
-  const sidebarToggle = document.getElementById("sidebarToggle");
-
-  sidebarToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("active");
-  });
-
-  const userAvatar = document.getElementById("userAvatar");
-  const userDropdown = document.getElementById("userDropdown");
-
-  userAvatar.addEventListener("click", () => {
-    userDropdown.classList.toggle("show");
-  });
-
-  window.addEventListener("click", (e) => {
-    if (!e.target.matches("#userAvatar")) {
-      if (userDropdown.classList.contains("show")) {
-        userDropdown.classList.remove("show");
-      }
-    }
-  });
 });
 
 profileForm.addEventListener("submit", async (e) => {

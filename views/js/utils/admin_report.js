@@ -29,11 +29,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Render comprehensive reports
   function renderReports(overview, performance, environmental) {
-    reportContainer.innerHTML = ""; // Clear previous content
+    reportContainer.innerHTML = ""; 
 
-    // Overview Section
     const overviewSection = document.createElement("section");
     overviewSection.className = "reporting-section";
     overviewSection.innerHTML = `
@@ -55,7 +53,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     reportContainer.appendChild(overviewSection);
 
-    // Charts Container
     chartContainer.innerHTML = `
         <div class="chart-row">
           <div class="chart-column">
@@ -103,13 +100,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     reportContainer.appendChild(chartContainer);
 
-    // Render Charts
     createItemTypeChart(overview.recycleItemsByType);
     createMonthlyTrendsChart(overview.monthlyRecyclingTrends);
     createEnvironmentalImpactChart(environmental);
   }
 
-  // Chart Creation Functions
   function createItemTypeChart(recycleItemsByType) {
     const ctx = document.getElementById("itemTypeChart").getContext("2d");
     new Chart(ctx, {
@@ -197,6 +192,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Initial data fetch
   await fetchReportingData();
 });
