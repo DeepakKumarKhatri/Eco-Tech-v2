@@ -11,11 +11,15 @@ import {
 import formidable from "formidable";
 import {
   changeItemInformation,
+  getPrizeForUser,
   newRecycleItem,
   recycleHistoryMetrics,
   recyleItem,
   recyleItems,
   removeRecyleItem,
+  systemPrizes,
+  userPrizes,
+  userUsedPrizes,
 } from "./services/user_recycle.js";
 
 const PORT = 8000;
@@ -139,8 +143,15 @@ const server = http.createServer((req, res) => {
     });
   } else if (route.startsWith("/recycle-history-metrics") && method === "GET") {
     recycleHistoryMetrics(req, res);
-  }
-  else {
+  } else if (route.startsWith("/system-prizes") && method === "GET") {
+    systemPrizes(req, res);
+  } else if (route.startsWith("/user-prizes") && method === "GET") {
+    userPrizes(req, res);
+  } else if (route.startsWith("/get-user-prize") && method === "POST") {
+    getPrizeForUser(req, res);
+  } else if (route.startsWith("/user-prize-history") && method === "GET") {
+    userUsedPrizes(req, res);
+  } else {
     const filePath = path.join(process.cwd(), "views", route);
 
     // Check if the requested file exists

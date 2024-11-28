@@ -3,7 +3,6 @@ import { createSessionEntry, getSessionEntry } from "../utils.js";
 import cookie from "cookie";
 import pool from "../connection.js";
 import fs from "fs";
-import { IncomingForm } from "formidable";
 import { earnedScoreUser } from "../utils.js";
 import url from "url";
 import querystring from "querystring";
@@ -432,9 +431,7 @@ export const recycleHistoryMetrics = async (req, res) => {
     let sqlQuery = "SELECT * FROM RecycleItem WHERE userId = ?";
     const queryParams = [user.id];
 
-    // Allowed date ranges
     const allowedDateRanges = ["1", "7", "30", "365", "all"];
-
     if (query.dateRange && allowedDateRanges.includes(query.dateRange)) {
       if (query.dateRange !== "all") {
         const daysAgo = parseInt(query.dateRange, 10);
@@ -475,5 +472,203 @@ export const recycleHistoryMetrics = async (req, res) => {
     console.error("Error in recycle history API:", error);
     res.writeHead(500, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ message: "Server Error", error: error.message }));
+  }
+};
+
+export const systemPrizes = async (req, res) => {
+  try {
+    const sessionId = cookie.parse(req.headers.cookie || "").uid;
+
+    if (!sessionId) {
+      return res
+        .writeHead(401, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Unauthorized" }));
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      return res
+        .writeHead(401, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    const [rewards] = await pool.query("SELECT * FROM Reward");
+    res
+      .writeHead(200, { "Content-Type": "application/json" })
+      .end(JSON.stringify(rewards));
+  } catch (error) {
+    console.error("Error fetching rewards:", error);
+    res
+      .writeHead(500, { "Content-Type": "application/json" })
+      .end(JSON.stringify({ message: "Error fetching rewards" }));
+  }
+};
+
+export const userPrizes = async (req, res) => {
+  try {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Unauthorized" }));
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    const [users] = await pool.query("SELECT points FROM User WHERE id = ?", [
+      user.id,
+    ]);
+
+    if (!users.length) {
+      return res
+        .writeHead(401, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    res
+      .writeHead(200, { "Content-Type": "application/json" })
+      .end(JSON.stringify({ points: users[0].points }));
+  } catch (error) {
+    console.error("Error fetching user points:", error);
+    res
+      .writeHead(500, { "Content-Type": "application/json" })
+      .end(JSON.stringify({ message: "Error fetching user points" }));
+  }
+};
+
+export const getPrizeForUser = async (req, res) => {
+  try {
+    const body = await new Promise((resolve, reject) => {
+      let data = "";
+      req.on("data", (chunk) => {
+        data += chunk;
+      });
+      req.on("end", () => resolve(data));
+      req.on("error", reject);
+    });
+
+    const { rewardId } = JSON.parse(body);
+
+    if (!rewardId || isNaN(parseInt(rewardId, 10))) {
+      return res
+        .writeHead(400, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Invalid reward ID" }));
+    }
+
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Unauthorized" }));
+    }
+
+    var user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    const [users] = await pool.query(
+      "SELECT id, points FROM User WHERE id = ?",
+      [user.id]
+    );
+
+    if (!users.length) {
+      return res
+        .writeHead(401, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    user = users[0];
+    const [rewards] = await pool.query("SELECT * FROM Reward WHERE id = ?", [
+      parseInt(rewardId, 10),
+    ]);
+
+    if (!rewards.length) {
+      return res
+        .writeHead(404, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Reward not found" }));
+    }
+
+    const reward = rewards[0];
+
+    if (user.points < reward.points) {
+      return res
+        .writeHead(400, { "Content-Type": "application/json" })
+        .end(JSON.stringify({ message: "Insufficient points" }));
+    }
+
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      await connection.execute(
+        "UPDATE User SET points = points - ? WHERE id = ?",
+        [reward.points, user.id]
+      );
+      await connection.execute(
+        "INSERT INTO Redemption (userId, rewardId) VALUES (?, ?)",
+        [user.id, reward.id]
+      );
+      await connection.commit();
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" }).end(
+      JSON.stringify({
+        message: "Reward redeemed successfully",
+        points: user.points - reward.points,
+      })
+    );
+  } catch (error) {
+    console.error("Error redeeming reward:", error);
+    res
+      .writeHead(500, { "Content-Type": "application/json" })
+      .end(JSON.stringify({ message: "Error redeeming reward" }));
+  }
+};
+
+export const userUsedPrizes = async (req, res) => {
+  try {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Unauthorized" }));
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    const [consumedRewards] = await pool.query(
+      `SELECT R.*, Re.createdAt 
+       FROM Redemption Re 
+       JOIN Reward R ON Re.rewardId = R.id 
+       WHERE Re.userId = ? 
+       ORDER BY Re.createdAt DESC`,
+      [user.id]
+    );
+
+    res
+      .writeHead(200, { "Content-Type": "application/json" })
+      .end(JSON.stringify(consumedRewards));
+  } catch (error) {
+    console.error("Error fetching consumed rewards:", error);
+    res
+      .writeHead(500, { "Content-Type": "application/json" })
+      .end(JSON.stringify({ message: "Error fetching consumed rewards" }));
   }
 };
