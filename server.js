@@ -4,8 +4,18 @@ import fs from "fs";
 import path from "path";
 import cookie from "cookie";
 import { signin, signout, signup } from "./services/security.js";
-import { getUserDetails, updateProfileData } from "./services/system_user.js";
+import {
+  userInformation,
+  changeUserInformation,
+} from "./services/system_user.js";
 import formidable from "formidable";
+import {
+  changeItemInformation,
+  newRecycleItem,
+  recyleItem,
+  recyleItems,
+  removeRecyleItem,
+} from "./services/user_recycle.js";
 
 const PORT = 8000;
 
@@ -95,14 +105,36 @@ const server = http.createServer((req, res) => {
   } else if (route === "/signout" && method === "POST") {
     signout(req, res);
   } else if (route === "/get-user" && method === "GET") {
-    getUserDetails(req, res);
+    userInformation(req, res);
   } else if (route === "/update-user" && method === "PUT") {
     parseFormData(req, (err, fields, files) => {
       if (err) {
         res.writeHead(400, { "Content-Type": "application/json" });
         return res.end(JSON.stringify({ error: "Error parsing form data" }));
-      }  
-      updateProfileData({ ...fields, image: files.image }, req, res);
+      }
+      changeUserInformation({ ...fields, image: files.image }, req, res);
+    });
+  } else if (route === "/items" && method === "GET") {
+    recyleItems(req, res);
+  } else if (route.startsWith("/item") && method === "GET") {
+    recyleItem(req, res);
+  } else if (route === "/new-item" && method === "POST") {
+    parseFormData(req, (err, fields, files) => {
+      if (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "Error parsing form data" }));
+      }
+      newRecycleItem({ ...fields, image: files.image }, req, res);
+    });
+  } else if (route.startsWith("/remove-item") && method === "DELETE") {
+    removeRecyleItem(req, res);
+  } else if (route.startsWith("/update-item") && method === "PUT") {
+    parseFormData(req, (err, fields, files) => {
+      if (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "Error parsing form data" }));
+      }
+      changeItemInformation({ ...fields }, req, res);
     });
   } else {
     const filePath = path.join(process.cwd(), "views", route);

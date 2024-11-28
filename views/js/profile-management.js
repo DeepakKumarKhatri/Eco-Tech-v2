@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageUpload = document.getElementById("imageUpload");
   const profileImage = document.getElementById("profileImage");
 
-  // Handle profile image change
   changeProfileImageBtn.addEventListener("click", () => {
     imageUpload.click();
   });
@@ -13,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const file = e.target.files[0];
     if (file && file.size > 2 * 1024 * 1024) {
       alert("Image size must be less than 2MB");
-      imageUpload.value = ""; // Clear the input
+      imageUpload.value = "";
     } else if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -23,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Sidebar toggle functionality
   const sidebar = document.getElementById("sidebar");
   const sidebarToggle = document.getElementById("sidebarToggle");
 
@@ -31,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.classList.toggle("active");
   });
 
-  // User dropdown functionality
   const userAvatar = document.getElementById("userAvatar");
   const userDropdown = document.getElementById("userDropdown");
 
@@ -39,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     userDropdown.classList.toggle("show");
   });
 
-  // Close the dropdown when clicking outside of it
   window.addEventListener("click", (e) => {
     if (!e.target.matches("#userAvatar")) {
       if (userDropdown.classList.contains("show")) {

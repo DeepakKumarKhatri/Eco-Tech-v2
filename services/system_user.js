@@ -4,7 +4,7 @@ import cookie from "cookie";
 import pool from "../connection.js";
 import fs from "fs";
 
-export const getUserDetails = async (req, res) => {
+export const userInformation = async (req, res) => {
   try {
     const cookies = cookie.parse(req.headers.cookie || "");
     const sessionId = cookies.uid;
@@ -29,7 +29,7 @@ export const getUserDetails = async (req, res) => {
   }
 };
 
-export const updateProfileData = async (data, req, res) => {
+export const changeUserInformation = async (data, req, res) => {
   try {
     const cookies = cookie.parse(req.headers.cookie || "");
     const sessionId = cookies.uid;
