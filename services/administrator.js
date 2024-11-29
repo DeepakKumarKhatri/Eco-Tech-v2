@@ -138,7 +138,7 @@ export const systemUsersInfo = async (req, res) => {
 
     const query = req.query || {};
     const { page = 1, limit = 10, search = "" } = query;
-    const offset = (page - 1) * limit;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
 
     const connection = await pool.getConnection();
     try {
