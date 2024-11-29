@@ -26,7 +26,14 @@ import {
   userUsedPrizes,
 } from "./services/user_recycle.js";
 import { userHomeData } from "./services/system.js";
-import { adminHomeData, adminUserDetailedRev, changeAdminInformation, systemUsersInfo } from "./services/administrator.js";
+import {
+  adminHomeData,
+  adminUserDetailedRev,
+  changeAdminInformation,
+  contributionStatusUpdation,
+  systemUsersContribution,
+  systemUsersInfo,
+} from "./services/administrator.js";
 
 const PORT = 8000;
 
@@ -180,7 +187,7 @@ const server = http.createServer((req, res) => {
     adminHomeData(req, res);
   } else if (route.startsWith("/system-users-info") && method === "GET") {
     systemUsersInfo(req, res);
-  }else if (route.startsWith("/admin-user-detailed-rev") && method === "GET") {
+  } else if (route.startsWith("/admin-user-detailed-rev") && method === "GET") {
     adminUserDetailedRev(req, res);
   } else if (route === "/update-admin" && method === "PUT") {
     parseFormData(req, (err, fields, files) => {
@@ -189,6 +196,22 @@ const server = http.createServer((req, res) => {
         return res.end(JSON.stringify({ error: "Error parsing form data" }));
       }
       changeAdminInformation({ ...fields, image: files.image }, req, res);
+    });
+  } else if (
+    route.startsWith("/system-users-contribution") &&
+    method === "GET"
+  ) {
+    systemUsersContribution(req, res);
+  } else if (
+    route.startsWith("/contribution-status-updation") &&
+    method === "POST"
+  ) {
+    parseJSONBody(req, (err, body) => {
+      if (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "Invalid JSON" }));
+      }
+      contributionStatusUpdation(body, req, res);
     });
   } else {
     const filePath = path.join(process.cwd(), "views", route);

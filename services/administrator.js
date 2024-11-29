@@ -199,22 +199,41 @@ export const systemUsersContribution = async (req, res) => {
       return res.end(JSON.stringify({ message: "Session expired" }));
     }
 
-    const { page = 1, limit = 10, status, search = "" } = req.query;
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const query = Object.fromEntries(url.searchParams);
+    const { page = 1, limit = 10, status, dateRange = "all" } = query;
     const offset = (page - 1) * limit;
 
     const connection = await pool.getConnection();
     try {
-      let query =
-        "SELECT r.*, u.fullName, u.email FROM RecycleItem r JOIN User u ON r.userId = u.id WHERE 1=1";
       const queryParams = [];
+      let query = "SELECT r.*, u.fullName, u.email FROM RecycleItem r JOIN User u ON r.userId = u.id WHERE 1=1";
 
-      if (status) {
+      if (status && status !== "all") {
         query += " AND r.status = ?";
-        queryParams.push(status);
+        queryParams.push(status.toUpperCase());
       }
-      if (search) {
-        query += " AND (r.itemType LIKE ? OR u.fullName LIKE ?)";
-        queryParams.push(`%${search}%`, `%${search}%`);
+
+      if (dateRange !== "all") {
+        const currentDate = new Date();
+        let startDate;
+
+        switch (dateRange) {
+          case "7":
+            startDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+            break;
+          case "30":
+            startDate = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+            break;
+          case "90":
+            startDate = new Date(currentDate.getTime() - 90 * 24 * 60 * 60 * 1000);
+            break;
+        }
+
+        if (startDate) {
+          query += " AND r.createdAt >= ?";
+          queryParams.push(startDate);
+        }
       }
 
       query += " ORDER BY r.createdAt DESC LIMIT ? OFFSET ?";
@@ -222,12 +241,14 @@ export const systemUsersContribution = async (req, res) => {
 
       const [submissions] = await connection.query(query, queryParams);
 
+      const countQueryParams = [...queryParams.slice(0, -2)];
       const [totalResult] = await connection.query(
         "SELECT COUNT(*) as count FROM RecycleItem r JOIN User u ON r.userId = u.id WHERE 1=1" +
-          (status ? " AND r.status = ?" : "") +
-          (search ? " AND (r.itemType LIKE ? OR u.fullName LIKE ?)" : ""),
-        queryParams.slice(0, -2)
+          (status && status !== "all" ? " AND r.status = ?" : "") +
+          (dateRange !== "all" ? " AND r.createdAt >= ?" : ""),
+        countQueryParams
       );
+
       const total = totalResult[0].count;
 
       res.writeHead(200, { "Content-Type": "application/json" });
@@ -249,14 +270,14 @@ export const systemUsersContribution = async (req, res) => {
     res.writeHead(500, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify({
-        message: "Error fetching user submissions",
+        message: "Error fetching submissions",
         error: error.message,
       })
     );
   }
 };
 
-export const contributionStatusUpdation = async (req, res) => {
+export const contributionStatusUpdation = async (body, req, res) => {
   try {
     const cookies = cookie.parse(req.headers.cookie || "");
     const sessionId = cookies.uid;
@@ -272,7 +293,7 @@ export const contributionStatusUpdation = async (req, res) => {
       return res.end(JSON.stringify({ message: "Session expired" }));
     }
 
-    const { submissionId, status } = req.body;
+    const { submissionId, status } = body;
 
     const connection = await pool.getConnection();
     try {
@@ -314,7 +335,7 @@ export const contributionStatusUpdation = async (req, res) => {
   }
 };
 
-export const statusPickUpRequestUpdation = async (req, res) => {
+export const statusPickUpRequestUpdation = async (body, req, res) => {
   try {
     const cookies = cookie.parse(req.headers.cookie || "");
     const sessionId = cookies.uid;
@@ -330,7 +351,7 @@ export const statusPickUpRequestUpdation = async (req, res) => {
       return res.end(JSON.stringify({ message: "Session expired" }));
     }
 
-    const { pickupId, status } = req.body;
+    const { pickupId, status } = body;
 
     const connection = await pool.getConnection();
     try {
