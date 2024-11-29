@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("address").value = user.address || "";
 
     const profileImage = document.getElementById("profileImage");
-    profileImage.src = user.imageUrl || "../../assets/images/demo_user.png";
+    profileImage.src = user.imageUrl || "../../assets/images/user_placeholder.png";
   } catch (error) {
     alert(error.message);
   }

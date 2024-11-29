@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       systemUser[0].fullName.split(" ")[0]
     }`;
     document.getElementById("userAvatar").src =
-      systemUser[0].imageUrl || "/default-avatar.png";
+      systemUser[0].imageUrl || "../../assets/images/user_placeholder.png";
 
     const summaryCards = document.querySelectorAll(
       ".summary-card .summary-value"
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   logoutLink.addEventListener("click", async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/auth/logout", {
+      const response = await fetch("/signout", {
         method: "POST",
         credentials: "include",
         headers: {
