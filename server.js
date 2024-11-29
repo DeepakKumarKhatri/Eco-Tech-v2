@@ -26,7 +26,7 @@ import {
   userUsedPrizes,
 } from "./services/user_recycle.js";
 import { userHomeData } from "./services/system.js";
-import { adminHomeData, adminUserDetailedRev, systemUsersInfo } from "./services/administrator.js";
+import { adminHomeData, adminUserDetailedRev, changeAdminInformation, systemUsersInfo } from "./services/administrator.js";
 
 const PORT = 8000;
 
@@ -182,6 +182,14 @@ const server = http.createServer((req, res) => {
     systemUsersInfo(req, res);
   }else if (route.startsWith("/admin-user-detailed-rev") && method === "GET") {
     adminUserDetailedRev(req, res);
+  } else if (route === "/update-admin" && method === "PUT") {
+    parseFormData(req, (err, fields, files) => {
+      if (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ error: "Error parsing form data" }));
+      }
+      changeAdminInformation({ ...fields, image: files.image }, req, res);
+    });
   } else {
     const filePath = path.join(process.cwd(), "views", route);
 

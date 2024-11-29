@@ -4,6 +4,7 @@ import cloudinary from "../apis.js";
 import { Readable } from "stream";
 import pool from "../connection.js";
 import url from "url";
+import fs from "fs";
 
 export const adminHomeData = async (req, res) => {
   try {
@@ -423,5 +424,106 @@ export const adminUserDetailedRev = async (req, res) => {
     console.error(error);
     res.writeHead(500, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ message: "Error fetching user details" }));
+  }
+};
+
+export const changeAdminInformation = async (data, req, res) => {
+  try {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "No active session" }));
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "No active session" }));
+    }
+
+    var { fullName, email } = data;
+    let uploadedImage = {};
+
+    if (data.image && data.image.length > 0) {
+      const file = Array.isArray(data.image) ? data.image[0] : data.image;
+
+      if (file.size > 2 * 1024 * 1024) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ message: "File size exceeds 2MB" }));
+      }
+
+      try {
+        uploadedImage = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { resource_type: "auto", public_id: `${Date.now()}` },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+
+          if (!file.filepath) {
+            reject(new Error("No file path found"));
+            return;
+          }
+
+          const readableStream = fs.createReadStream(file.filepath);
+          readableStream.pipe(uploadStream);
+        });
+      } catch (error) {
+        console.error("Error uploading image to Cloudinary:", error);
+        res.writeHead(500, { "Content-Type": "application/json" });
+        return res.end(JSON.stringify({ message: "Error uploading image" }));
+      }
+    }
+
+    fullName = Array.isArray(data.fullName) ? data.fullName[0] : data.fullName;
+    email = Array.isArray(data.email) ? data.email[0] : data.email;
+
+    const connection = await pool.getConnection();
+    try {
+      const query = `
+              UPDATE user
+              SET 
+                fullName = ?, 
+                email = ?,  
+                imageUrl = ?, 
+                imageId = ? 
+              WHERE id = ?
+            `;
+      const values = [
+        fullName || user.fullName,
+        email || user.email,
+        uploadedImage.secure_url || user.imageUrl,
+        uploadedImage.public_id || user.imageId,
+        user.id,
+      ];
+
+      await connection.execute(query, values);
+    } finally {
+      connection.release();
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return res.end(
+      JSON.stringify({
+        user: {
+          id: user.id,
+          fullName,
+          email,
+          imageUrl: uploadedImage.secure_url || user.imageUrl,
+          imageId: uploadedImage.public_id || user.imageId,
+        },
+        message: "Profile updated successfully",
+      })
+    );
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    return res.end(
+      JSON.stringify({ message: "Server Error", error: error.message })
+    );
   }
 };
