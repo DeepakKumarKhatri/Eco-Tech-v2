@@ -3,22 +3,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   const chartContainer = document.createElement("div");
   chartContainer.className = "reporting-charts";
 
-  // Fetch and render reporting data
   async function fetchReportingData() {
     try {
-      // Fetch multiple reports
-      const [overviewResponse, performanceResponse, environmentalResponse] =
-        await Promise.all([
-          fetch("/api/admin/overview", { credentials: "include" }),
-          fetch("/api/admin/user-performance", { credentials: "include" }),
-          fetch("/api/admin/environmental-impact", { credentials: "include" }),
-        ]);
+      const recyclingReport = await fetch("/recycling-report", {
+        credentials: "include",
+      });
 
-      const overviewData = await overviewResponse.json();
-      const performanceData = await performanceResponse.json();
-      const environmentalData = await environmentalResponse.json();
+      const data = await recyclingReport.json();
+      const { recyclingOverview } = data;
+      const { userRecyclingPerformance } = data;
+      const { environmentalImpactReport } = data;
 
-      renderReports(overviewData, performanceData, environmentalData);
+      renderReports(
+        recyclingOverview,
+        userRecyclingPerformance,
+        environmentalImpactReport
+      );
     } catch (error) {
       console.error("Error fetching reports:", error);
       reportContainer.innerHTML = `
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderReports(overview, performance, environmental) {
-    reportContainer.innerHTML = ""; 
+    reportContainer.innerHTML = "";
 
     const overviewSection = document.createElement("section");
     overviewSection.className = "reporting-section";
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           <div class="stat-card">
             <h3>Total Weight Recycled</h3>
-            <p>${overview.totalWeight.toFixed(2)} kg</p>
+            <p>${Number(overview.totalWeight).toFixed(2)} kg</p>
           </div>
         </div>
       `;
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                   <tr>
                     <td>${user.fullName}</td>
                     <td>${user.totalItems}</td>
-                    <td>${user.totalWeight.toFixed(2)} kg</td>
+                    <td>${Number(user.totalWeight).toFixed(2)} kg</td>
                     <td>${user.points}</td>
                   </tr>
                 `
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         labels: recycleItemsByType.map((item) => item.itemType),
         datasets: [
           {
-            data: recycleItemsByType.map((item) => item._count.id),
+            data: recycleItemsByType.map((item) => item.id),
             backgroundColor: [
               "#FF6384",
               "#36A2EB",

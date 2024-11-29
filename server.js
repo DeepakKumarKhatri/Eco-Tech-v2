@@ -31,6 +31,7 @@ import {
   adminUserDetailedRev,
   changeAdminInformation,
   contributionStatusUpdation,
+  recyclingReport,
   systemUsersContribution,
   systemUsersInfo,
 } from "./services/administrator.js";
@@ -213,7 +214,14 @@ const server = http.createServer((req, res) => {
       }
       contributionStatusUpdation(body, req, res);
     });
-  } else {
+  } 
+  else if (
+    route.startsWith("/recycling-report") &&
+    method === "GET"
+  ) {
+    recyclingReport(req, res);
+  } 
+  else {
     const filePath = path.join(process.cwd(), "views", route);
 
     // Check if the requested file exists

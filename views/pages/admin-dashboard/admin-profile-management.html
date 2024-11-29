@@ -34,8 +34,8 @@
             <header class="dashboard-header">
                 <h1>Dashboard</h1>
                 <div class="user-info">
-                    <span>Welcome, John</span>
-                    <img src="../../assets/images/demo_user.png" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <span></span>
+                    <img src="../../assets/images/user_placeholder.png" alt="User Avatar" class="user-avatar" id="userAvatar">
                     <div class="dropdown-menu" id="userDropdown">
                         <a href="/pages/user-dashboard/profile-management.html" id="profileLink">Profile</a>
                         <a href="#" id="logoutLink">Logout</a>
@@ -46,18 +46,18 @@
             <div class="dashboard-content">
                 <section class="profile-management">
                     <div class="profile-image-section">
-                        <img src="../../assets/images/demo_user.png" alt="User Profile" id="profileImage">
+                        <img src="../../assets/images/user_placeholder.png" alt="User Profile" id="profileImage">
                         <button id="changeProfileImage" class="btn-primary">Change Profile Image</button>
                         <input type="file" id="imageUpload" accept="image/*" style="display: none;">
                     </div>
                     <form id="profileForm" class="profile-form">
                         <div class="form-group">
                             <label for="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" value="John Doe" required>
+                            <input type="text" id="fullName" name="fullName" value="" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="email" value="john.doe@example.com" required>
+                            <input type="email" id="email" name="email" value="" required>
                         </div>
                         
                         <div class="form-group">
@@ -69,9 +69,7 @@
         </main>
     </div>
 
-    <script src="../../js/main.js"></script>
     <script src="../../js/admin-dashboard.js"></script>
-    <script src="../../js/utils/helper.js"></script>
     <script src="../../js/admin-profile-management.js"></script>
 </body>
 </html>

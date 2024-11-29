@@ -1,9 +1,7 @@
 import cookie from "cookie";
 import { createSessionEntry, getSessionEntry } from "../utils.js";
 import cloudinary from "../apis.js";
-import { Readable } from "stream";
 import pool from "../connection.js";
-import url from "url";
 import fs from "fs";
 
 export const adminHomeData = async (req, res) => {
@@ -207,7 +205,8 @@ export const systemUsersContribution = async (req, res) => {
     const connection = await pool.getConnection();
     try {
       const queryParams = [];
-      let query = "SELECT r.*, u.fullName, u.email FROM RecycleItem r JOIN User u ON r.userId = u.id WHERE 1=1";
+      let query =
+        "SELECT r.*, u.fullName, u.email FROM RecycleItem r JOIN User u ON r.userId = u.id WHERE 1=1";
 
       if (status && status !== "all") {
         query += " AND r.status = ?";
@@ -220,13 +219,19 @@ export const systemUsersContribution = async (req, res) => {
 
         switch (dateRange) {
           case "7":
-            startDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+            startDate = new Date(
+              currentDate.getTime() - 7 * 24 * 60 * 60 * 1000
+            );
             break;
           case "30":
-            startDate = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+            startDate = new Date(
+              currentDate.getTime() - 30 * 24 * 60 * 60 * 1000
+            );
             break;
           case "90":
-            startDate = new Date(currentDate.getTime() - 90 * 24 * 60 * 60 * 1000);
+            startDate = new Date(
+              currentDate.getTime() - 90 * 24 * 60 * 60 * 1000
+            );
             break;
         }
 
@@ -545,6 +550,156 @@ export const changeAdminInformation = async (data, req, res) => {
     res.writeHead(500, { "Content-Type": "application/json" });
     return res.end(
       JSON.stringify({ message: "Server Error", error: error.message })
+    );
+  }
+};
+
+export const recyclingReport = async (req, res) => {
+  try {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Unauthorized" }));
+      return;
+    }
+
+    const user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Session expired" }));
+      return;
+    }
+
+    const connection = await pool.getConnection();
+    try {
+      const [totalRecycleItems] = await connection.query(
+        "SELECT COUNT(*) as count FROM RecycleItem"
+      );
+      const [approvedRecycleItems] = await connection.query(
+        "SELECT COUNT(*) as count FROM RecycleItem WHERE status = ?",
+        ["APPROVED"]
+      );
+      const [totalWeight] = await connection.query(
+        "SELECT SUM(weight) as total FROM RecycleItem WHERE status = ?",
+        ["APPROVED"]
+      );
+
+      const [recycleItemsByType] = await connection.query(
+        `
+        SELECT itemType, COUNT(*) as count, SUM(weight) as totalWeight
+        FROM RecycleItem
+        WHERE status = ?
+        GROUP BY itemType
+      `,
+        ["APPROVED"]
+      );
+
+      const [monthlyRecyclingTrends] = await connection.query(
+        `
+        SELECT 
+          DATE_FORMAT(createdAt, '%Y-%m') as month, 
+          COUNT(*) as itemCount,
+          SUM(weight) as totalWeight
+        FROM RecycleItem
+        WHERE status = ?
+        GROUP BY month
+        ORDER BY month
+        LIMIT 12
+      `,
+        ["APPROVED"]
+      );
+
+      const [pickupRequestStats] = await connection.query(`
+        SELECT status, COUNT(*) as count
+        FROM PickupRequest
+        GROUP BY status
+      `);
+
+      const query = req.query || {};
+      const { page = 1, limit = 10, sortBy = "totalWeight" } = query;
+      const offset = (page - 1) * limit;
+
+      const [userPerformance] = await connection.query(
+        `
+        SELECT 
+          u.id, u.fullName, u.email, u.points,
+          COUNT(r.id) as totalItems,
+          SUM(r.weight) as totalWeight
+        FROM User u
+        LEFT JOIN RecycleItem r ON u.id = r.userId AND r.status = ?
+        WHERE u.role = ?
+        GROUP BY u.id
+        ORDER BY ${sortBy === "totalWeight" ? "totalWeight" : "totalItems"} DESC
+        LIMIT ? OFFSET ?
+      `,
+        ["APPROVED", "USER", Number(limit), offset]
+      );
+
+      const [totalUsersResult] = await connection.query(
+        "SELECT COUNT(*) as count FROM User WHERE role = ?",
+        ["USER"]
+      );
+      const totalUsers = totalUsersResult[0].count;
+
+      const CO2_SAVINGS_PER_KG = 2.5;
+      const ENERGY_SAVINGS_PER_KG = 0.5;
+      const WATER_SAVINGS_PER_KG = 0.3;
+
+      const weight = totalWeight[0].total || 0;
+      const environmentalImpact = {
+        totalWeight: weight,
+        CO2Savings: weight * CO2_SAVINGS_PER_KG,
+        energySavings: weight * ENERGY_SAVINGS_PER_KG,
+        waterSavings: weight * WATER_SAVINGS_PER_KG,
+      };
+
+      const [itemTypeBreakdown] = await connection.query(
+        `
+        SELECT itemType, SUM(weight) as totalWeight
+        FROM RecycleItem
+        WHERE status = ?
+        GROUP BY itemType
+      `,
+        ["APPROVED"]
+      );
+
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          recyclingOverview: {
+            totalRecycleItems: totalRecycleItems[0].count,
+            approvedRecycleItems: approvedRecycleItems[0].count,
+            totalWeight: weight,
+            recycleItemsByType,
+            monthlyRecyclingTrends,
+            pickupRequestStats,
+          },
+          userRecyclingPerformance: {
+            userPerformance,
+            pagination: {
+              currentPage: Number(page),
+              totalPages: Math.ceil(totalUsers / limit),
+              totalUsers,
+            },
+          },
+          environmentalImpactReport: {
+            environmentalImpact,
+            itemTypeBreakdown,
+          },
+        })
+      );
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Error generating recycling report:", error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        message: "Failed to generate recycling report",
+        error: error.message,
+      })
     );
   }
 };
