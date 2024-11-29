@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${user.phone_number || 'N/A'}</td>
                         <td>${new Date(user.createdAt).toLocaleDateString()}</td>
                         <td>${user.points || 0}</td>
-                        <td>${user._count.recycleItem}</td>
-                        <td>${user._count.pickupRequest}</td>
+                        <td>${user.recycleItemCount}</td>
+                        <td>${user.pickupRequestCount}</td>
                         <td>
                             <button class="btn-details" data-user-id="${user.id}">View Details</button>
                         </td>
@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch users
     async function loadUsers(search = '', page = 1) {
         try {
-            const response = await fetch(`/api/admin/all-users?page=${page}&search=${search}`, {
+            const response = await fetch(`/system-users-info?page=${page}&search=${search}`, {
                 credentials: 'include'
-            });
+            }); 
             
             if (!response.ok) throw new Error('Failed to fetch users');
             
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Show user details modal
     async function showUserDetails(userId) {
         try {
-            const response = await fetch(`/api/admin/user-details/${userId}`, {
+            const response = await fetch(`/admin-user-detailed-rev/${userId}`, {
                 credentials: 'include'
             });
             

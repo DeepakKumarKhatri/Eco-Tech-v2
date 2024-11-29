@@ -3,6 +3,7 @@ import { createSessionEntry, getSessionEntry } from "../utils.js";
 import cloudinary from "../apis.js";
 import { Readable } from "stream";
 import pool from "../connection.js";
+import url from "url";
 
 export const adminHomeData = async (req, res) => {
   try {
@@ -136,7 +137,8 @@ export const systemUsersInfo = async (req, res) => {
       return res.end(JSON.stringify({ message: "Session expired" }));
     }
 
-    const { page = 1, limit = 10, search = "" } = req.query;
+    const query = req.query || {};
+    const { page = 1, limit = 10, search = "" } = query;
     const offset = (page - 1) * limit;
 
     const connection = await pool.getConnection();
@@ -378,3 +380,48 @@ async function executeQuery(connection, query, params) {
     throw error;
   }
 }
+
+export const adminUserDetailedRev = async (req, res) => {
+  try {
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const sessionId = cookies.uid;
+
+    if (!sessionId) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Unauthorized" }));
+    }
+
+    var user = await getSessionEntry(sessionId);
+    if (!user) {
+      res.writeHead(401, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Session expired" }));
+    }
+
+    const userId = req.url.split("/").pop();
+
+    const connection = await pool.getConnection();
+    try {
+      const [rows] = await connection.query(
+        "SELECT id, fullName, email, phone_number, createdAt, points, imageUrl " +
+          "FROM User WHERE id = ?",
+        [parseInt(userId)]
+      );
+
+      if (rows.length === 0) {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "User not found" }));
+        return;
+      }
+
+      user = rows[0];
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(user));
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error(error);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Error fetching user details" }));
+  }
+};

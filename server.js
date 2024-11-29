@@ -26,7 +26,7 @@ import {
   userUsedPrizes,
 } from "./services/user_recycle.js";
 import { userHomeData } from "./services/system.js";
-import { adminHomeData } from "./services/administrator.js";
+import { adminHomeData, adminUserDetailedRev, systemUsersInfo } from "./services/administrator.js";
 
 const PORT = 8000;
 
@@ -176,8 +176,12 @@ const server = http.createServer((req, res) => {
     });
   } else if (route.startsWith("/user-home-data") && method === "GET") {
     userHomeData(req, res);
-  }  else if (route.startsWith("/admin-home-data") && method === "GET") {
+  } else if (route.startsWith("/admin-home-data") && method === "GET") {
     adminHomeData(req, res);
+  } else if (route.startsWith("/system-users-info") && method === "GET") {
+    systemUsersInfo(req, res);
+  }else if (route.startsWith("/admin-user-detailed-rev") && method === "GET") {
+    adminUserDetailedRev(req, res);
   } else {
     const filePath = path.join(process.cwd(), "views", route);
 
