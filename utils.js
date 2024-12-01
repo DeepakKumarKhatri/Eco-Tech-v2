@@ -3,6 +3,19 @@ import pool from "./connection.js";
 async function createSessionEntry(sessionId, user) {
   try {
     const connection = await pool.getConnection();
+
+    // Get all current sessions for the user
+    const [sessions] = await connection.query(
+      "SELECT id FROM session WHERE userId = ?",
+      [user.id]
+    );
+
+    if (sessions.length >= 3) {
+      // Remove all previous sessions if the user already has 3 or more
+      await connection.query("DELETE FROM session WHERE userId = ?", [user.id]);
+    }
+
+    // Create a new session for the user
     const expiresAt = new Date();
     expiresAt.setFullYear(expiresAt.getFullYear() + 1);
     await connection.query(

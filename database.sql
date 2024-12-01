@@ -81,6 +81,17 @@ CREATE TABLE Redemption (
   FOREIGN KEY (rewardId) REFERENCES Reward(id)
 );
 
+INSERT INTO Reward (id, name, description, points, imageUrl, createdAt, updatedAt)
+VALUES
+    (1, 'Plastic Bag', 'Plastic Suck let the moto live', 200, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKTrbsw0iUD8_4vXw9DZwAp0SBS6hUzziSGQ&s', NOW(), NOW()),
+    (2, 'Awareness Session', 'Donate a free session to remote areas', 750, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3Gk1nPTmSudjHgXR1jmGRBKCuBAwwbMFPuA&s', NOW(), NOW()),
+    (3, 'Recycle 50ft ocean', 'Recycle 50ft ocean', 1500, 'https://www.shutterstock.com/image-photo/household-electrical-scrapped-electronic-devices-260nw-2223131779.jpg', NOW(), NOW()),
+    (4, 'Donate Recycle Item', 'Donate Recycle Item', 500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiSvEVm3ezZoNAd5fSx3JXVpb-Lmtid5TtZA&s', NOW(), NOW()),
+    (5, 'Recycled Utensils', 'Recycled Utensils', 2000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHK7ozxZQqWyW7h_PzyqbhLBOHMJ3aV2OEXw&s', NOW(), NOW());
+
 select * from user;
 select * from session;
 select * from recycleItem;
+select * from reward;
+select * from redemption;
+select * from pickuprequest;
