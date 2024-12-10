@@ -3,6 +3,7 @@ import { createSessionEntry, getSessionEntry } from "../utils.js";
 import cookie from "cookie";
 import pool from "../connection.js";
 import fs from "fs";
+import bcrypt from "bcrypt";
 
 export const userInformation = async (req, res) => {
   try {
@@ -45,8 +46,9 @@ export const changeUserInformation = async (data, req, res) => {
       return res.end(JSON.stringify({ message: "No active session" }));
     }
 
-    var { fullName, email, phone_number, address } = data;
+    var { fullName, email, phone_number, address, password } = data;
     let uploadedImage = {};
+    let hashedPassword;
 
     if (data.image && data.image.length > 0) {
       const file = Array.isArray(data.image) ? data.image[0] : data.image;
@@ -88,19 +90,26 @@ export const changeUserInformation = async (data, req, res) => {
       : data.phone_number;
     address = Array.isArray(data.address) ? data.address[0] : data.address;
 
+    if (password && password !== "") {
+      password = Array.isArray(data.password)
+        ? data.password[0]
+        : data.password;
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
     const connection = await pool.getConnection();
     try {
-      const query = `
-            UPDATE user
-            SET 
-              fullName = ?, 
-              email = ?, 
-              phone_number = ?, 
-              address = ?, 
-              imageUrl = ?, 
-              imageId = ? 
-            WHERE id = ?
-          `;
+      let query = `
+        UPDATE user
+        SET 
+          fullName = ?, 
+          email = ?, 
+          phone_number = ?, 
+          address = ?, 
+          imageUrl = ?, 
+          imageId = ?
+      `;
+
       const values = [
         fullName || user.fullName,
         email || user.email,
@@ -108,8 +117,15 @@ export const changeUserInformation = async (data, req, res) => {
         address || user.address,
         uploadedImage.secure_url || user.imageUrl,
         uploadedImage.public_id || user.imageId,
-        user.id,
       ];
+
+      if (hashedPassword) {
+        query += ", password = ?";
+        values.push(hashedPassword);
+      }
+
+      query += " WHERE id = ?";
+      values.push(user.id);
 
       await connection.execute(query, values);
     } finally {

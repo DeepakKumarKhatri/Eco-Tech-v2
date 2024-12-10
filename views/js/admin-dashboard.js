@@ -1,3 +1,5 @@
+import { checkValidity } from "./authenticator.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const sidebarToggle = document.getElementById("sidebarToggle");
   const sidebar = document.getElementById("sidebar");
@@ -27,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const data = await dashboardResponse.json();
     const { adminInformation } = data;
+    await checkValidity(adminInformation);
 
     document.querySelector(".user-info span").textContent = `Welcome, ${
         adminInformation.fullName.split(" ")[0]

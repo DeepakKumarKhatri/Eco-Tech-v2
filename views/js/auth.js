@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const content = await response.json();
 
       if (content.message === "User registered successfully") {
-        window.location.href = "/pages/user-dashboard/index.html";
+        window.location.href = "/pages/auth/index.html";
       } else {
         alert(content.message);
       }

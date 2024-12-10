@@ -42,6 +42,7 @@ profileForm.addEventListener("submit", async (e) => {
   const formData = new FormData();
   formData.append("fullName", document.getElementById("fullName").value);
   formData.append("email", document.getElementById("email").value);
+  formData.append("password", document.getElementById("password").value);
 
   if (imageUpload.files[0]) {
     formData.append("image", imageUpload.files[0]);

@@ -31,6 +31,7 @@ profileForm.addEventListener("submit", async (e) => {
   formData.append("email", document.getElementById("email").value);
   formData.append("phone_number", document.getElementById("phone").value);
   formData.append("address", document.getElementById("address").value);
+  formData.append("password", document.getElementById("password").value);
 
   if (imageUpload.files[0]) {
     formData.append("image", imageUpload.files[0]);

@@ -1,4 +1,5 @@
 import cookie from "cookie";
+import bcrypt from "bcrypt";
 import { createSessionEntry, getSessionEntry } from "../utils.js";
 import cloudinary from "../apis.js";
 import pool from "../connection.js";
@@ -469,8 +470,9 @@ export const changeAdminInformation = async (data, req, res) => {
       return res.end(JSON.stringify({ message: "No active session" }));
     }
 
-    var { fullName, email } = data;
+    var { fullName, email, password } = data;
     let uploadedImage = {};
+    let hashedPassword;
 
     if (data.image && data.image.length > 0) {
       const file = Array.isArray(data.image) ? data.image[0] : data.image;
@@ -508,24 +510,38 @@ export const changeAdminInformation = async (data, req, res) => {
     fullName = Array.isArray(data.fullName) ? data.fullName[0] : data.fullName;
     email = Array.isArray(data.email) ? data.email[0] : data.email;
 
+    if (password && password !== "") {
+      password = Array.isArray(data.password)
+        ? data.password[0]
+        : data.password;
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
     const connection = await pool.getConnection();
     try {
-      const query = `
-              UPDATE user
-              SET 
-                fullName = ?, 
-                email = ?,  
-                imageUrl = ?, 
-                imageId = ? 
-              WHERE id = ?
-            `;
+      var query = `
+        UPDATE user
+                  SET
+                      fullName = ?,
+                      email = ?,  
+                      imageUrl = ?,
+                      imageId = ?
+              `;
+
       const values = [
         fullName || user.fullName,
         email || user.email,
         uploadedImage.secure_url || user.imageUrl,
         uploadedImage.public_id || user.imageId,
-        user.id,
       ];
+
+      if (hashedPassword) {
+        query += ", password = ?";
+        values.push(hashedPassword);
+      }
+
+      query += " WHERE id = ?";
+      values.push(user.id);
 
       await connection.execute(query, values);
     } finally {
